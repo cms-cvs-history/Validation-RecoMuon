@@ -1,0 +1,28 @@
+block ValidationHistoParameters = {
+    untracked uint32 nBinPt  = 50 # number of pT Bin
+    untracked uint32 nBinEta = 49 # number of EtaBin (= 49 in PTDR plots)
+    untracked uint32 nBinPhi = 50 # number of phi Bin
+    untracked uint32 nBinDPt = 100 # number of bins for Delta pT histo
+    untracked uint32 nBinQPt = 300
+
+    untracked double minPt  = 0    # minimum pT
+    untracked double maxPt  = 5000 # maximum pT
+    untracked double minEta = 0 #-2.4 # minimum eta
+    untracked double maxEta = 2.4 # maximum eta
+
+    untracked double maxStaQPt =  2   # maximum simga(q/pT)
+    untracked double maxGlbQPt =  2   # maximum simga(q/pT)
+
+    untracked double maxStaDPt = 5   # maximum Delta(pT)
+    untracked double maxGlbDPt = 5   # maximum Delta(pT)
+}
+
+module MuonValidator = RecoMuonValidator {
+    using ValidationHistoParameters
+
+    InputTag StaTrack = standAloneMuons
+    InputTag GlbTrack = globalMuons
+    InputTag SimTrack = g4SimHits
+
+    untracked string outputFileName = "RecoMuonValidation.root"
+}
