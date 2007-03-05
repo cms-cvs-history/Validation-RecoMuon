@@ -14,6 +14,6 @@ for i in Mu-Pt1000 Mu+Pt1000 \
          Mu-Pt50   Mu+Pt50   \
          Mu-Pt10   Mu+Pt10   
 do
-  bsub -q $QUEUE -oo out/$i.out $RUNSCRIPT $i
+  bsub -q $QUEUE -oo /dev/null $RUNSCRIPT $i
 done
 
