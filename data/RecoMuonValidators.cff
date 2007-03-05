@@ -4,7 +4,7 @@ include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
 include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
 include "RecoMuon/DetLayers/data/muonDetLayerGeometry.cfi"
 
-#include "RecoMuon/TrackingTools/data/MuonServiceProxy.cff"
+include "RecoMuon/TrackingTools/data/MuonServiceProxy.cff"
 
 include "Validation/RecoMuon/data/RecoMuonValidators.cfi"
 
