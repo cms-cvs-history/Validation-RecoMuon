@@ -87,8 +87,8 @@ void DrawEff(TString sampleName, TString muonType1, TString muonType2)
 
   TFile file(sampleName+".root"); file.cd();
 
-  TH1F* hRec = (TH1F*)((TH2F*)file.Get(muonType1+"PhiVsEtaHist"))->ProjectionY();
-  TH1F* hSim = (TH1F*)((TH2F*)file.Get(muonType2+"PhiVsEtaHist"))->ProjectionY();
+  TH1F* hRec = (TH1F*)((TH2F*)file.Get(muonType1+"EtaVsPhi"))->ProjectionX();
+  TH1F* hSim = (TH1F*)((TH2F*)file.Get(muonType2+"EtaVsPhi"))->ProjectionX();
 
   if ( gDoFolding ) {
     hRec = FoldH1(hRec);

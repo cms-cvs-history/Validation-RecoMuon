@@ -58,8 +58,8 @@ void DrawLoss2D(TString sampleName, TString muonType1, TString muonType2, TVirtu
   pad->SetGridx(); pad->SetGridy();
   TFile file(sampleName+".root"); file.cd();
 
-  TH2F* hRec = (TH2F*)file.Get(muonType1+"PhiVsEtaHist");
-  TH2F* hSim = (TH2F*)file.Get(muonType2+"PhiVsEtaHist");
+  TH2F* hRec = (TH2F*)file.Get(muonType1+"PhiVsEta");
+  TH2F* hSim = (TH2F*)file.Get(muonType2+"PhiVsEta");
 
 //  hRec->RebinX(2); 
 //  hSim->RebinX(2);

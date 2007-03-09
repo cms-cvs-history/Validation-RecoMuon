@@ -68,7 +68,7 @@ void DrawFitSlice(TString dataName, TString muonType,
   TString drawOpt(TString("E1X0") + (gNHist==1 ? "":"same"));
 
   TFile file(dataName+".root"); file.cd();
-  TH2F* resHist = (TH2F*)file.Get(muonType+"EtaVsResolPtHist"); 
+  TH2F* resHist = (TH2F*)file.Get(muonType+"EtaVsErrQPt"); 
   resHist->Rebin2D(gRebinX, gRebinY);
   const int nBinsX = resHist->GetNbinsX();
   const double xMin = resHist->GetBinCenter(0);
@@ -81,9 +81,9 @@ void DrawFitSlice(TString dataName, TString muonType,
   resHist->FitSlicesY(gaus);
 
   gROOT->cd();
-  TH1F* fitMean = (TH1F*)dir.Get(muonType+"EtaVsResolPtHist_1")->Clone();
-  TH1F* fitReso = (TH1F*)dir.Get(muonType+"EtaVsResolPtHist_2")->Clone();
-  TH1F* fitChi2 = (TH1F*)dir.Get(muonType+"EtaVsResolPtHist_chi2")->Clone();
+  TH1F* fitMean = (TH1F*)dir.Get(muonType+"EtaVsErrQPt_1")->Clone();
+  TH1F* fitReso = (TH1F*)dir.Get(muonType+"EtaVsErrQPt_2")->Clone();
+  TH1F* fitChi2 = (TH1F*)dir.Get(muonType+"EtaVsErrQPt_chi2")->Clone();
 
   fitMean->SetTitle(muonType+"Muon #sigma(q/p_{T}) mean");
   fitReso->SetTitle(muonType+"Muon Resolution #sigma(q/p_{T})");
