@@ -13,12 +13,14 @@ void DrawRes2D()
 void DrawResQHists(TString sample)
 {
   TCanvas* c = new TCanvas(sample+"Canvas", sample+" sigma(q/pT)", 1024, 768);
-  c->Divide(2,2);
+  c->Divide(2,3);
 
-  DrawResVsEta(TString("Mu+")+sample, "Sta", c->cd(1));
-  DrawResVsEta(TString("Mu-")+sample, "Sta", c->cd(2));
-  DrawResVsEta(TString("Mu+")+sample, "Glb", c->cd(3));
-  DrawResVsEta(TString("Mu-")+sample, "Glb", c->cd(4));
+  DrawResVsEta(TString("Mu+")+sample, "Seed", c->cd(1));
+  DrawResVsEta(TString("Mu-")+sample, "Seed", c->cd(2));
+  DrawResVsEta(TString("Mu+")+sample, "Sta" , c->cd(3));
+  DrawResVsEta(TString("Mu-")+sample, "Sta" , c->cd(4));
+  DrawResVsEta(TString("Mu+")+sample, "Glb" , c->cd(5));
+  DrawResVsEta(TString("Mu-")+sample, "Glb" , c->cd(6));
 
   c->Print(TString("plots/Res2DMu")+sample+".gif");
 }
