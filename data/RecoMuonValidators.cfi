@@ -26,6 +26,7 @@ module SingleMuonValidator = RecoMuonValidator {
     InputTag StaTrack = standAloneMuons
     InputTag GlbTrack = globalMuons
     InputTag SimTrack = g4SimHits
+    InputTag TkTrack  = ctfWithMaterialTracks
     InputTag Seed     = MuonSeed
 
     string SeedPropagator = "SteppingHelixPropagatorAny"
