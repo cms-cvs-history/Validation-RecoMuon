@@ -5,113 +5,32 @@ void DrawEff(bool doFolding = false)
   gInterpreter->LoadMacro("libValidation.C");
   gStyle->SetOptStat(0);
   gDoFolding = doFolding;
+   
+  TCanvas* c1 = new TCanvas("StaSeedEff", 
+			   "Sta and Seed Efficiencies", 1024, 768);
+  c1->Divide(3,1);
+  
+  DrawEff("Seed","Sim",c1->cd(1));
+  DrawEff("Sta","Sim",c1->cd(2));
+  DrawEff("Sta","Seed",c1->cd(3));
 
-  TCanvas* c;
+  TCanvas* c2 = new TCanvas("GlbEff", 
+			    "Glb Efficiencies", 1024, 768);
+  c2->Divide(4,1);
 
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cSeedMinusEff", "Seed Minus Efficiency", 1024, 768); 
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu-Pt10"  , "Seed", "Sim");
-  DrawEff("Mu-Pt50"  , "Seed", "Sim");
-  DrawEff("Mu-Pt100" , "Seed", "Sim");
-  DrawEff("Mu-Pt500" , "Seed", "Sim");
-  DrawEff("Mu-Pt1000", "Seed", "Sim");
-  gLegend->Draw("same");
-  c->Print("plots/EffSeedMinus.gif");
-                                   
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cSeedPlusEff", "Seed Plus Efficiency", 1024, 768); 
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu+Pt10"  , "Seed", "Sim");
-  DrawEff("Mu+Pt50"  , "Seed", "Sim");
-  DrawEff("Mu+Pt100" , "Seed", "Sim");
-  DrawEff("Mu+Pt500" , "Seed", "Sim");
-  DrawEff("Mu+Pt1000", "Seed", "Sim");
-  gLegend->Draw("same");
-  c->Print("plots/EffSeedPlus.gif");
- 
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cStaMinusEff", "StaMuon Minus Efficiency", 1024, 768); 
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu-Pt10"  , "Sta", "Sim");
-  DrawEff("Mu-Pt50"  , "Sta", "Sim");
-  DrawEff("Mu-Pt100" , "Sta", "Sim");
-  DrawEff("Mu-Pt500" , "Sta", "Sim");
-  DrawEff("Mu-Pt1000", "Sta", "Sim");
-  gLegend->Draw("same");
-  c->Print("plots/EffStaMinus.gif");
-
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cStaPlusEff", "StaMuon Plus Efficiency", 1024, 768); 
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu+Pt10"  , "Sta", "Sim");
-  DrawEff("Mu+Pt50"  , "Sta", "Sim");
-  DrawEff("Mu+Pt100" , "Sta", "Sim");
-  DrawEff("Mu+Pt500" , "Sta", "Sim");
-  DrawEff("Mu+Pt1000", "Sta", "Sim");
-  gLegend->Draw("same");
-  c->Print("plots/EffStaPlus.gif");
-
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cGlbMinusEff", "GlbMuon Minus Efficiency", 1024, 768); 
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu-Pt10"  , "Glb", "Sim");
-  DrawEff("Mu-Pt50"  , "Glb", "Sim");
-  DrawEff("Mu-Pt100" , "Glb", "Sim");
-  DrawEff("Mu-Pt500" , "Glb", "Sim");
-  DrawEff("Mu-Pt1000", "Glb", "Sim");
-  gLegend->Draw("same");
-  c->Print("plots/EffGlbMinus.gif");
- 
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cGlbPlusEff", "GlbMuon Minus Efficiency", 1024, 768); 
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu+Pt10"  , "Glb", "Sim");
-  DrawEff("Mu+Pt50"  , "Glb", "Sim");
-  DrawEff("Mu+Pt100" , "Glb", "Sim");
-  DrawEff("Mu+Pt500" , "Glb", "Sim");
-  DrawEff("Mu+Pt1000", "Glb", "Sim");
-  gLegend->Draw("same");
-  c->Print("plots/EffGlbPlus.gif");
-
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cGlbAlgMinusEff", "GlbMuon Minus Alg Efficiency", 1024, 768);
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu-Pt10"  , "Glb", "Tk");
-  DrawEff("Mu-Pt50"  , "Glb", "Tk");
-  DrawEff("Mu-Pt100" , "Glb", "Tk");
-  DrawEff("Mu-Pt500" , "Glb", "Tk");
-  DrawEff("Mu-Pt1000", "Glb", "Tk");
-  gLegend->Draw("same");
-  c->Print("plots/EffGlbAlgMinus.gif");
-
-  gLineColor = 1;
-  gLegend = new TLegend(.85, .15, 1.0, .30, "");
-  c = new TCanvas("cGlbAlgPlusEff", "GlbMuon Minus Alg Efficiency", 1024, 768);
-  c->cd(); c->SetGridx(); c->SetGridy();
-  DrawEff("Mu+Pt10"  , "Glb", "Tk");
-  DrawEff("Mu+Pt50"  , "Glb", "Tk");
-  DrawEff("Mu+Pt100" , "Glb", "Tk");
-  DrawEff("Mu+Pt500" , "Glb", "Tk");
-  DrawEff("Mu+Pt1000", "Glb", "Tk");
-  gLegend->Draw("same");
-  c->Print("plots/EffGlbAlgPlus.gif");
-
-
+  DrawEff("Glb","Sim",c2->cd(1));
+  DrawEff("Glb","Tk",c2->cd(2));
+  DrawEff("Glb","Sta",c2->cd(3));
+  DrawEff("Glb","Seed",c2->cd(4));
 }
 
 void DrawEff(TString sampleName, TString muonType1, TString muonType2)
 {
 
-  TFile file(sampleName+".root"); file.cd();
+  TFile file("../data/RootHisto_200703301524/"+sampleName+".root"); file.cd();
 
+  if(!file.IsOpen()) return;
+  
   TH1F* hRec = (TH1F*)((TH2F*)file.Get(muonType1+"EtaVsPhi"))->ProjectionX();
   TH1F* hSim = (TH1F*)((TH2F*)file.Get(muonType2+"EtaVsPhi"))->ProjectionX();
 
@@ -141,3 +60,41 @@ void DrawEff(TString sampleName, TString muonType1, TString muonType2)
   file.Close();
 }
 
+
+void DrawEff(TString muonStep2, TString muonStep1,TVirtualPad* pad){
+  pad->Divide(1,2);
+  pad->cd(1);
+  pad->SetGridx(); pad->SetGridy();
+
+  //   TCanvas* c;
+  //   c = new TCanvas(muonStep2+muonStep1+"Eff_MuPlus", 
+  // 		  muonStep2+"-"+muonStep1+" Efficiency for #mu^{+}", 1024, 768);
+  //   c->cd(); c->SetGridx(); c->SetGridy();
+  
+  gLineColor = 1;
+  gLegend = new TLegend(.85, .15, 1.0, .30, "");
+
+  DrawEff("Mu+Pt10"  , muonStep2, muonStep1);
+  DrawEff("Mu+Pt50"  , muonStep2, muonStep1);
+  DrawEff("Mu+Pt100" , muonStep2, muonStep1);
+  DrawEff("Mu+Pt500" , muonStep2, muonStep1);
+  DrawEff("Mu+Pt1000", muonStep2, muonStep1);
+  gLegend->Draw("same");
+  pad->Print("plots/Eff_"+muonStep2+"_"+muonStep1+"_MuPlus.gif");
+
+
+  gLineColor = 1;
+  gLegend = new TLegend(.85, .15, 1.0, .30, "");
+  //   c = new TCanvas(muonStep2+muonStep1+"Eff_MuMinus", 
+  // 		  muonStep2+"-"+muonStep1+" Efficiency for #mu^{-}", 1024, 768);
+  //   c->cd(); c->SetGridx(); c->SetGridy();
+  
+  pad->cd(2);
+  DrawEff("Mu-Pt10"  , muonStep2, muonStep1);
+  DrawEff("Mu-Pt50"  , muonStep2, muonStep1);
+  DrawEff("Mu-Pt100" , muonStep2, muonStep1);
+  DrawEff("Mu-Pt500" , muonStep2, muonStep1);
+  DrawEff("Mu-Pt1000", muonStep2, muonStep1);
+  gLegend->Draw("same");
+  pad->Print("plots/Eff_"+muonStep2+"_"+muonStep1+"_MuMinus.gif");
+}
