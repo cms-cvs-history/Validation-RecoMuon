@@ -1,7 +1,11 @@
 bool gDoFolding = false;
 
-void DrawEff(bool doFolding = false)
-{
+TString gSampleLoc;// = "../data/RootHisto_200703301524/";
+
+void DrawEff(TString sampleLoc, bool doFolding = false){
+
+  gSampleLoc = sampleLoc;
+
   gInterpreter->LoadMacro("libValidation.C");
   gStyle->SetOptStat(0);
   gDoFolding = doFolding;
@@ -27,7 +31,7 @@ void DrawEff(bool doFolding = false)
 void DrawEff(TString sampleName, TString muonType1, TString muonType2)
 {
 
-  TFile file("../data/RootHisto_200703301524/"+sampleName+".root"); file.cd();
+  TFile file(gSampleLoc+sampleName+".root"); file.cd();
 
   if(!file.IsOpen()) return;
   
@@ -39,19 +43,13 @@ void DrawEff(TString sampleName, TString muonType1, TString muonType2)
     hSim = FoldH1(hSim);
   }
  
-  hRec->Sumw2();
-  hSim->Sumw2();
+  // hRec->Sumw2();
+  // hSim->Sumw2();
 
   gROOT->cd();
-  TH1F* his  = new TH1F(sampleName+muonType1+muonType2+"his", sampleName+muonType1+muonType2, 
-                        hRec->GetNbinsX(), hRec->GetXaxis()->GetXmin(), hRec->GetXaxis()->GetXmax()); 
 
-  his->Divide(hRec, hSim, 1, 1, "B");
-  his->SetMinimum(0.8); his->SetMaximum(1.0);
+  TH1F* his  = computeEfficiency(sampleName+muonType1+muonType2,hRec,hSim);
 
-  his->SetTitle(muonType1+muonType2+" Muon Efficiency");
-  his->GetXaxis()->SetTitle("Psuedorapidity #eta");
-  his->GetYaxis()->SetTitle("Efficiency"); 
   his->SetLineColor(gLineColor);
   his->Draw(TString("E1X0")+(gLineColor==1?"":"same"));
   ConnectLines(his, sampleName);
@@ -97,4 +95,36 @@ void DrawEff(TString muonStep2, TString muonStep1,TVirtualPad* pad){
   DrawEff("Mu-Pt1000", muonStep2, muonStep1);
   gLegend->Draw("same");
   pad->Print("plots/Eff_"+muonStep2+"_"+muonStep1+"_MuMinus.gif");
+}
+
+
+TH1F* computeEfficiency(TString name, TH1F *reco, TH1F *sim){
+    
+  TH1F* hEff  = new TH1F(name, name, 
+			reco->GetNbinsX(), reco->GetXaxis()->GetXmin(), reco->GetXaxis()->GetXmax());
+
+  TH1F *hEff = (TH1F*) reco->Clone();  
+  
+  hEff->Divide(sim);
+  
+  hEff->SetName("Eff_"+name);
+  hEff->SetTitle(name+" Muon Efficiency");
+  
+  hEff->SetMinimum(0.8); hEff->SetMaximum(1.0);
+  hEff->GetXaxis()->SetTitle("Psuedorapidity #eta");
+  hEff->GetYaxis()->SetTitle("Efficiency"); 
+  
+  // Set the error accordingly to binomial statistics
+  int nBinsEta = hEff->GetNbinsX();
+  for(int bin = 1; bin <=  nBinsEta; bin++) {
+    float nSimHit = sim->GetBinContent(bin);
+    float eff = hEff->GetBinContent(bin);
+    float error = 0;
+    if(nSimHit != 0 && eff <= 1) {
+      error = sqrt(eff*(1-eff)/nSimHit);
+    }
+    hEff->SetBinError(bin, error);
+  }
+  
+  return hEff;
 }
