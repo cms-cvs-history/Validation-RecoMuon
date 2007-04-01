@@ -39,7 +39,7 @@ void DrawFitSlice(TString dataName, TString muonType, TString histoName,
 {
   gROOT->cd();
   TFile file(dataName+".root"); 
-  if(file.isZombie()) return;
+  if(file.IsZombie()) return;
   file.cd();
   TH2F* resHist = (TH2F*)file.Get(muonType+histoName);
   const double yMin = TMath::Max(resHist->GetYaxis()->GetXmin(), -gMeanMax);
