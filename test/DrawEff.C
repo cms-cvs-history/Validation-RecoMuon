@@ -1,6 +1,6 @@
 bool gDoFolding = false;
 
-TString gSampleLoc;// = "../data/RootHisto_200703301524/";
+TString gSampleLoc;
 
 void DrawEff(TString sampleLoc, bool doFolding = false){
 
