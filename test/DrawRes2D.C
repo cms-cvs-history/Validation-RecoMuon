@@ -1,5 +1,9 @@
-void DrawRes2D()
+TString gSampleLoc;
+
+void DrawRes2D(TString sampleLoc)
 {
+  gSampleLoc = sampleLoc;
+
   gStyle->SetPalette(1);
   gStyle->SetOptStat(0);
 
@@ -15,12 +19,12 @@ void DrawResQHists(TString sample)
   TCanvas* c = new TCanvas(sample+"Canvas", sample+" sigma(q/pT)", 1024, 768);
   c->Divide(2,3);
 
-  DrawResVsEta(TString("Mu+")+sample, "Seed", c->cd(1));
-  DrawResVsEta(TString("Mu-")+sample, "Seed", c->cd(2));
-  DrawResVsEta(TString("Mu+")+sample, "Sta" , c->cd(3));
-  DrawResVsEta(TString("Mu-")+sample, "Sta" , c->cd(4));
-  DrawResVsEta(TString("Mu+")+sample, "Glb" , c->cd(5));
-  DrawResVsEta(TString("Mu-")+sample, "Glb" , c->cd(6));
+  DrawResVsEta(gSampleLoc+TString("Mu+")+sample, "Seed", c->cd(1));
+  DrawResVsEta(gSampleLoc+TString("Mu-")+sample, "Seed", c->cd(2));
+  DrawResVsEta(gSampleLoc+TString("Mu+")+sample, "Sta" , c->cd(3));
+  DrawResVsEta(gSampleLoc+TString("Mu-")+sample, "Sta" , c->cd(4));
+  DrawResVsEta(gSampleLoc+TString("Mu+")+sample, "Glb" , c->cd(5));
+  DrawResVsEta(gSampleLoc+TString("Mu-")+sample, "Glb" , c->cd(6));
 
   c->Print(TString("plots/Res2DMu")+sample+".gif");
 }

@@ -1,7 +1,11 @@
 TLegend* gLegend;
 
-void DrawPull()
+TString gSampleLoc;
+
+void DrawPull(TString sampleLoc)
 {
+  gSampleLoc = sampleLoc;
+
   gStyle->SetPalette(1);
   gStyle->SetOptStat(0);
   gInterpreter->LoadMacro("libValidation.C");
@@ -40,11 +44,11 @@ void DrawFitHisto(TString muonType, TString histoName, TString charge, TString p
 
   gLegend = new TLegend(.85, .85, 1.0, 1.0, "");
 
-  DrawFitSlice("Mu"+charge+"Pt10"  , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt50"  , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt100" , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt500" , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt1000", muonType, histoName, cMean, cWidth, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt10"  , muonType, histoName, cMean, cWidth, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt50"  , muonType, histoName, cMean, cWidth, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt100" , muonType, histoName, cMean, cWidth, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt500" , muonType, histoName, cMean, cWidth, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt1000", muonType, histoName, cMean, cWidth, cChi2);
 
   cMean ->cd(); gLegend->Draw("same");
   cWidth->cd(); gLegend->Draw("same");
@@ -60,12 +64,12 @@ void DrawPull2DHists(TString sample)
   TCanvas* c = new TCanvas(sample+"Canvas", sample+" sigma(q/pT)", 1024, 768);
   c->Divide(2,3);
 
-  DrawPullVsEta(TString("Mu+")+sample, "Seed", c->cd(1));
-  DrawPullVsEta(TString("Mu-")+sample, "Seed", c->cd(2));
-  DrawPullVsEta(TString("Mu+")+sample, "Sta" , c->cd(3));
-  DrawPullVsEta(TString("Mu-")+sample, "Sta" , c->cd(4));
-  DrawPullVsEta(TString("Mu+")+sample, "Glb" , c->cd(5));
-  DrawPullVsEta(TString("Mu-")+sample, "Glb" , c->cd(6));
+  DrawPullVsEta(gSampleLoc+TString("Mu+")+sample, "Seed", c->cd(1));
+  DrawPullVsEta(gSampleLoc+TString("Mu-")+sample, "Seed", c->cd(2));
+  DrawPullVsEta(gSampleLoc+TString("Mu+")+sample, "Sta" , c->cd(3));
+  DrawPullVsEta(gSampleLoc+TString("Mu-")+sample, "Sta" , c->cd(4));
+  DrawPullVsEta(gSampleLoc+TString("Mu+")+sample, "Glb" , c->cd(5));
+  DrawPullVsEta(gSampleLoc+TString("Mu-")+sample, "Glb" , c->cd(6));
 
   c->Print(TString("plots/Pull2DMu")+sample+".gif");
 }

@@ -1,7 +1,11 @@
 TLegend* gLegend;
 
-void DrawRes()
+TString gSampleLoc;
+
+void DrawRes(TString sampleLoc)
 {
+  gSampleLoc = sampleLoc;
+
   gStyle->SetOptStat(0);
   gInterpreter->LoadMacro("libValidation.C");
 
@@ -35,11 +39,11 @@ void DrawFitHisto(TString muonType, TString histoName, TString charge, TString p
 
   gLegend = new TLegend(.85, .85, 1.0, 1.0, "");
 
-  DrawFitSlice("Mu"+charge+"Pt10"  , muonType, histoName, cMean, cReso, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt50"  , muonType, histoName, cMean, cReso, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt100" , muonType, histoName, cMean, cReso, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt500" , muonType, histoName, cMean, cReso, cChi2);
-  DrawFitSlice("Mu"+charge+"Pt1000", muonType, histoName, cMean, cReso, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt10"  , muonType, histoName, cMean, cReso, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt50"  , muonType, histoName, cMean, cReso, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt100" , muonType, histoName, cMean, cReso, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt500" , muonType, histoName, cMean, cReso, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt1000", muonType, histoName, cMean, cReso, cChi2);
 
   cMean->cd(); gLegend->Draw("same");
   cReso->cd(); gLegend->Draw("same");
