@@ -18,6 +18,8 @@ void DrawEff(TString sampleLoc, bool doFolding = false){
   DrawEff("Sta","Sim",c1->cd(2));
   DrawEff("Sta","Seed",c1->cd(3));
 
+  c1->Print("plots/Eff_Sta_Seed.gif");
+
   TCanvas* c2 = new TCanvas("GlbEff", 
 			    "Glb Efficiencies", 1024, 768);
   c2->Divide(4,1);
@@ -26,6 +28,8 @@ void DrawEff(TString sampleLoc, bool doFolding = false){
   DrawEff("Glb","Tk",c2->cd(2));
   DrawEff("Glb","Sta",c2->cd(3));
   DrawEff("Glb","Seed",c2->cd(4));
+
+  c2->Print("plots/Eff_Glb.gif");
 }
 
 void DrawEff(TString sampleName, TString muonType1, TString muonType2)
@@ -62,7 +66,7 @@ void DrawEff(TString sampleName, TString muonType1, TString muonType2)
 void DrawEff(TString muonStep2, TString muonStep1,TVirtualPad* pad){
   pad->Divide(1,2);
   pad->cd(1);
-  pad->SetGridx(); pad->SetGridy();
+  pad->GetPad(1)->SetGridx(); pad->GetPad(1)->SetGridy();
 
   //   TCanvas* c;
   //   c = new TCanvas(muonStep2+muonStep1+"Eff_MuPlus", 
@@ -78,7 +82,7 @@ void DrawEff(TString muonStep2, TString muonStep1,TVirtualPad* pad){
   DrawEff("Mu+Pt500" , muonStep2, muonStep1);
   DrawEff("Mu+Pt1000", muonStep2, muonStep1);
   gLegend->Draw("same");
-  pad->Print("plots/Eff_"+muonStep2+"_"+muonStep1+"_MuPlus.gif");
+  pad->GetPad(1)->Print("plots/Eff_"+muonStep2+"_"+muonStep1+"_MuPlus.gif");
 
 
   gLineColor = 1;
@@ -88,13 +92,14 @@ void DrawEff(TString muonStep2, TString muonStep1,TVirtualPad* pad){
   //   c->cd(); c->SetGridx(); c->SetGridy();
   
   pad->cd(2);
+  pad->GetPad(2)->SetGridx(); pad->GetPad(2)->SetGridy();
   DrawEff("Mu-Pt10"  , muonStep2, muonStep1);
   DrawEff("Mu-Pt50"  , muonStep2, muonStep1);
   DrawEff("Mu-Pt100" , muonStep2, muonStep1);
   DrawEff("Mu-Pt500" , muonStep2, muonStep1);
   DrawEff("Mu-Pt1000", muonStep2, muonStep1);
   gLegend->Draw("same");
-  pad->Print("plots/Eff_"+muonStep2+"_"+muonStep1+"_MuMinus.gif");
+  pad->GetPad(2)->Print("plots/Eff_"+muonStep2+"_"+muonStep1+"_MuMinus.gif");
 }
 
 
