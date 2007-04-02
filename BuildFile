@@ -5,17 +5,15 @@
 <use name=TrackingTools/TransientTrack>
 <use name=SimDataFormats/Track>
 <use name=CommonTools/Statistics>
+
 <use name=RecoVertex/VertexTools>
 <use name=RecoVertex/KalmanVertexFit>
 
 <use name=CLHEP>
 <use name=root>
 
-<use name=DQMServices/CoreROOT>
-
 <flags SEAL_PLUGIN_NAME="ValidationRecoMuon"> 
 
 <export>
-    <lib name=ValidationRecoMuon>
-    <use name=DQMServices/CoreROOT>
+   <lib name=ValidationRecoMuon>
 </Export>

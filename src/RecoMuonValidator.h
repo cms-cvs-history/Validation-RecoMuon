@@ -3,64 +3,61 @@
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
-
 #include "FWCore/Framework/interface/Event.h"
-#include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Framework/interface/ESHandle.h"
-#include "FWCore/Framework/interface/MakerMacros.h"
-
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/InputTag.h"
 
-#include "SimDataFormats/Track/interface/SimTrack.h"
 #include "SimDataFormats/Track/interface/SimTrackContainer.h"
-
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeedCollection.h"
 #include "RecoMuon/TrackingTools/interface/MuonServiceProxy.h"
 
-#include "DQMServices/Core/interface/DaqMonitorBEInterface.h"
-#include "DQMServices/Daemon/interface/MonitorDaemon.h"
-#include "FWCore/ServiceRegistry/interface/Service.h"
-
-//#include <TFile.h>
-//#include <TH1F.h>
-//#include <TH2F.h>
-
 #include <utility>
+
+#include <TFile.h>
+#include <TH1F.h>
+#include <TH2F.h>
 
 class HResolution
 {
  public:
-  HResolution(DaqMonitorBEInterface* theDQMService, std::string name,
+  HResolution(std::string name,
               int nBinErrQPt, double widthErrQPt,
               int nBinPull, double widthPull,
               int nBinEta, double minEta, double maxEta,
               int nBinPhi, double minPhi, double maxPhi)
   {
-    theDQMService_ = theDQMService;
-
-    hEtaVsErrQPt_  = theDQMService_->book2D((name+"EtaVsErrQPt").c_str(), (name+" #eta vs #sigma(q/p_{T})").c_str(),
+    hEtaVsErrQPt_  = new TH2F((name+"EtaVsErrQPt").c_str(), (name+" #eta vs #sigma(q/p_{T})").c_str(),
                               nBinEta, minEta, maxEta, nBinErrQPt, -widthErrQPt, widthErrQPt);
-    hEtaVsPullPt_  = theDQMService_->book2D((name+"EtaVsPullPt").c_str(), (name+" #eta vs Pull p_{T}").c_str(),
+    hEtaVsPullPt_  = new TH2F((name+"EtaVsPullPt").c_str(), (name+" #eta vs Pull p_{T}").c_str(),
                               nBinEta, minEta, maxEta, nBinPull, -widthPull, widthPull);
-    hPhiVsPullPt_  = theDQMService_->book2D((name+"PhiVsPullPt").c_str(), (name+" #phi vs Pull p_{T}").c_str(),
+    hPhiVsPullPt_  = new TH2F((name+"PhiVsPullPt").c_str(), (name+" #phi vs Pull p_{T}").c_str(),
                               nBinPhi, minPhi, maxPhi, nBinPull, -widthPull, widthPull);
-    hEtaVsPullEta_ = theDQMService_->book2D((name+"EtaVsPullEta").c_str(), (name+" #eta vs Pull #eta").c_str(),
+    hEtaVsPullEta_ = new TH2F((name+"EtaVsPullEta").c_str(), (name+" #eta vs Pull #eta").c_str(),
                               nBinEta, minEta, maxEta, nBinPull, -widthPull, widthPull);
-    hPhiVsPullEta_ = theDQMService_->book2D((name+"PhiVsPullEta").c_str(), (name+" #phi vs Pull #eta").c_str(),
+    hPhiVsPullEta_ = new TH2F((name+"PhiVsPullEta").c_str(), (name+" #phi vs Pull #eta").c_str(),
                               nBinPhi, minPhi, maxPhi, nBinPull, -widthPull, widthPull);
-    hEtaVsPullPhi_ = theDQMService_->book2D((name+"EtaVsPullPhi").c_str(), (name+" #eta vs Pull #phi").c_str(),
+    hEtaVsPullPhi_ = new TH2F((name+"EtaVsPullPhi").c_str(), (name+" #eta vs Pull #phi").c_str(),
                               nBinEta, minEta, maxEta, nBinPull, -widthPull, widthPull);
-    hPhiVsPullPhi_ = theDQMService_->book2D((name+"PhiVsPullPhi").c_str(), (name+" #phi vs Pull #phi").c_str(),
+    hPhiVsPullPhi_ = new TH2F((name+"PhiVsPullPhi").c_str(), (name+" #phi vs Pull #phi").c_str(),
                               nBinPhi, minPhi, maxPhi, nBinPull, -widthPull, widthPull);
-    hMisQAboutEta_ = theDQMService_->book1D((name+"MisQAboutEta").c_str(), (name+" mischarge about #eta").c_str(),
+    hMisQAboutEta_ = new TH1F((name+"MisQAboutEta").c_str(), (name+" mischarge about #eta").c_str(),
                               nBinEta, minEta, maxEta);
   };
-  ~HResolution() { };
-/*
+  ~HResolution()
+  {
+//    delete hEtaVsErrQPt_ ;
+//    delete hEtaVsPullPt_ ;
+//    delete hPhiVsPullPt_ ;
+//    delete hEtaVsPullEta_;
+//    delete hPhiVsPullEta_;
+//    delete hEtaVsPullPhi_;
+//    delete hPhiVsPullPhi_;
+//    delete hMisQAboutEta_;
+  };
   void write()
   {
     hEtaVsErrQPt_ ->Write();
@@ -72,7 +69,6 @@ class HResolution
     hPhiVsPullPhi_->Write();
     hMisQAboutEta_->Write();
   };
-*/
   void fillInfo(const SimTrack& simTrack, const TrajectoryStateOnSurface& tsos)
   {
     const TrackCharge simQ = static_cast<TrackCharge>(simTrack.charge());
@@ -106,21 +102,11 @@ class HResolution
     if ( simQ != recQ ) hMisQAboutEta_->Fill(simEta);
   };
  protected:
-  DaqMonitorBEInterface * theDQMService_;
-
-  MonitorElement * hEtaVsErrQPt_ ;
-  MonitorElement * hEtaVsPullPt_ , * hPhiVsPullPt_ ;
-  MonitorElement * hEtaVsPullEta_, * hPhiVsPullEta_;
-  MonitorElement * hEtaVsPullPhi_, * hPhiVsPullPhi_;
-  MonitorElement * hMisQAboutEta_;
-
-/*
   TH2F * hEtaVsErrQPt_ ;
   TH2F * hEtaVsPullPt_ , * hPhiVsPullPt_ ;
   TH2F * hEtaVsPullEta_, * hPhiVsPullEta_;
   TH2F * hEtaVsPullPhi_, * hPhiVsPullPhi_;
   TH1F * hMisQAboutEta_;
-*/
 };
 
 class RecoMuonValidator : public edm::EDAnalyzer
@@ -163,15 +149,9 @@ class RecoMuonValidator : public edm::EDAnalyzer
   std::string outputFileName_;
   TFile* outputFile_;
 
-  DaqMonitorBEInterface * theDQMService_;
-  MonitorElement * hSimEtaVsPhi_, * hStaEtaVsPhi_, * hGlbEtaVsPhi_, * hTkEtaVsPhi_, * hSeedEtaVsPhi_;
-  MonitorElement * hEtaVsNDtSimHits_, * hEtaVsNCSCSimHits_, * hEtaVsNRPCSimHits_, * hEtaVsNSimHits_;
-  MonitorElement * hSeedEtaVsNHits_, * hStaEtaVsNHits_, * hGlbEtaVsNHits_;
-/*
   TH2F * hSimEtaVsPhi_, * hStaEtaVsPhi_, * hGlbEtaVsPhi_, * hTkEtaVsPhi_, * hSeedEtaVsPhi_;
   TH2F * hEtaVsNDtSimHits_, * hEtaVsNCSCSimHits_, * hEtaVsNRPCSimHits_, * hEtaVsNSimHits_;
   TH2F * hSeedEtaVsNHits_, * hStaEtaVsNHits_, * hGlbEtaVsNHits_;
-*/
   HResolution * hStaResol_, * hGlbResol_, * hSeedResol_;
 
   MuonServiceProxy * theMuonService_;
