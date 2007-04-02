@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-queue = 8nh
+queue = '8nh'
 
 import os, sys, datetime
 
@@ -245,5 +245,5 @@ for sampleName, sampleFiles in samples.items():
 
 		# submit to batch server
 		os.putenv('OUTDIR', outdir)
-		os.system("bsub -q %s -oo /dev/null run.sh %s_%d", (queue, sampleName, section))
+		os.system("bsub -q %s -oo /dev/null run.sh %s_%d" % (queue, sampleName, section))
 
