@@ -79,6 +79,8 @@ void DrawPullVsEta(TString sampleName, TString muonType, TVirtualPad* pad)
   pad->SetGridx(); pad->SetGridy();
   TFile file(sampleName+".root"); file.cd();
 
+  if(file.IsZombie()) return;
+
   gROOT->cd();
   TH2F* his = (TH2F*)(file.Get(muonType+"EtaVsPullPt")->Clone());
   his->Rebin2D(1,2);
