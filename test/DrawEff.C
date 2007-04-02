@@ -52,7 +52,7 @@ void DrawEff(TString sampleName, TString muonType1, TString muonType2)
 
   gROOT->cd();
 
-  TH1F* his  = computeEfficiency(sampleName+muonType1+muonType2,hRec,hSim);
+  TH1F* his  = computeEfficiency(sampleName,muonType1+muonType2,hRec,hSim);
 
   his->SetLineColor(gLineColor);
   his->Draw(TString("E1X0")+(gLineColor==1?"":"same"));
@@ -103,18 +103,19 @@ void DrawEff(TString muonStep2, TString muonStep1,TVirtualPad* pad){
 }
 
 
-TH1F* computeEfficiency(TString name, TH1F *reco, TH1F *sim){
+TH1F* computeEfficiency(TString sampleName,TString type, TH1F *reco, TH1F *sim){
     
-  TH1F* hEff  = new TH1F(name, name, 
-			reco->GetNbinsX(), reco->GetXaxis()->GetXmin(), reco->GetXaxis()->GetXmax());
+//   TH1F* hEff  = new TH1F(name, name, 
+// 			reco->GetNbinsX(), reco->GetXaxis()->GetXmin(), reco->GetXaxis()->GetXmax());
 
   TH1F *hEff = (TH1F*) reco->Clone();  
   
   hEff->Divide(sim);
   
-  hEff->SetName("Eff_"+name);
-  hEff->SetTitle(name+" Muon Efficiency");
+  hEff->SetName("Eff_"+sampleName+type);
+  hEff->SetTitle(type+" Muon Efficiency");
   
+
   hEff->SetMinimum(0.8); hEff->SetMaximum(1.0);
   hEff->GetXaxis()->SetTitle("Psuedorapidity #eta");
   hEff->GetYaxis()->SetTitle("Efficiency"); 
