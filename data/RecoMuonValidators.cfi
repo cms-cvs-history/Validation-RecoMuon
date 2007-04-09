@@ -8,6 +8,8 @@ module SingleMuonValidator = RecoMuonValidator {
     InputTag TkTrack  = ctfWithMaterialTracks
     InputTag Seed     = MuonSeed
 
+    string subDir = "Offline"
+
     double staMinPt = 1.0
     double staMinRho = 1.0
     double staMinR = 2.5
