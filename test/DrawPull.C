@@ -33,30 +33,43 @@ void DrawFitHisto(TString muonType, TString histoName, TString charge, TString p
 {
   gLineColor = 1;
   TString name = muonType + (charge=="+"?"Plus":"Minus");
-  TCanvas* cMean  = new TCanvas(name+"MeanCanvas", histoName+"Muon "+charge+" Mean Pull p_{T}", 1024, 768);
-  TCanvas* cWidth = new TCanvas(name+"PullCanvas", histoName+"Muon "+charge+" Width Pull p_{T}", 1024, 768);
-  TCanvas* cChi2  = new TCanvas(name+"Chi2Canvas", histoName+"Muon "+charge+" Pull Gaussian Fit Chi2", 1024, 768);
+  
+  TCanvas* c = new TCanvas(name+"_MeanCanvas"+"_PullCanvas"+"_Chi2Canvas",histoName+"Muon "+charge+" Mean,width of Pull, chi2" , 1024, 768);
+  c->Divide(1,3);
+  
+//   TCanvas* cMean  = new TCanvas(name+"MeanCanvas", histoName+"Muon "+charge+" Mean Pull p_{T}", 1024, 768);
+//   TCanvas* cWidth = new TCanvas(name+"PullCanvas", histoName+"Muon "+charge+" Width Pull p_{T}", 1024, 768);
+//   TCanvas* cChi2  = new TCanvas(name+"Chi2Canvas", histoName+"Muon "+charge+" Pull Gaussian Fit Chi2", 1024, 768);
+  
+//    cMean ->SetGridx(); cMean ->SetGridy(); 
+//    cWidth->SetGridx(); cWidth->SetGridy(); 
+//    cChi2 ->SetGridx(); cChi2 ->SetGridy(); 
+  c->GetPad(1)->SetGridx(); c->GetPad(1)->SetGridy();
+  c->GetPad(1)->SetName(histoName+"Muon "+charge+" Mean Pull p_{T}");
 
-  cMean ->SetGridx(); cMean ->SetGridy(); 
-  cWidth->SetGridx(); cWidth->SetGridy(); 
-  cChi2 ->SetGridx(); cChi2 ->SetGridy(); 
+  c->GetPad(2)->SetGridx(); c->GetPad(2)->SetGridy();
+  c->GetPad(2)->SetName(histoName+"Muon "+charge+" Width Pull p_{T}");
+  
+  c->GetPad(3)->SetGridx(); c->GetPad(3)->SetGridy();
+  c->GetPad(3)->SetName(histoName+"Muon "+charge+" Pull Gaussian Fit Chi2");
+
 //  cWidth->SetLogy();
 
   gLegend = new TLegend(.85, .85, 1.0, 1.0, "");
 
-  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt10"  , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt50"  , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt100" , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt500" , muonType, histoName, cMean, cWidth, cChi2);
-  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt1000", muonType, histoName, cMean, cWidth, cChi2);
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt10"  , muonType, histoName, c->cd(1), c->cd(2), c->cd(3));
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt50"  , muonType, histoName, c->cd(1), c->cd(2), c->cd(3));
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt100" , muonType, histoName, c->cd(1), c->cd(2), c->cd(3));
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt500" , muonType, histoName, c->cd(1), c->cd(2), c->cd(3));
+  DrawFitSlice(gSampleLoc+"Mu"+charge+"Pt1000", muonType, histoName, c->cd(1), c->cd(2), c->cd(3));
 
-  cMean ->cd(); gLegend->Draw("same");
-  cWidth->cd(); gLegend->Draw("same");
-  cChi2 ->cd(); gLegend->Draw("same");
+  c->cd(1); gLegend->Draw("same");
+  c->cd(2); gLegend->Draw("same");
+  c->cd(3); gLegend->Draw("same");
 
-  cMean ->Print(prefix+"Mean"+name+".gif");
-  cWidth->Print(prefix+"Pull"+name+".gif");
-  cChi2 ->Print(prefix+"Chi2"+name+".gif");
+  c->GetPad(1)->Print(prefix+"Mean"+name+".gif");
+  c->GetPad(2)->Print(prefix+"Pull"+name+".gif");
+  c->GetPad(3) ->Print(prefix+"Chi2"+name+".gif");
 }
 
 void DrawPull2DHists(TString sample)
@@ -78,7 +91,6 @@ void DrawPullVsEta(TString sampleName, TString muonType, TVirtualPad* pad)
 {
   pad->SetGridx(); pad->SetGridy();
   TFile file(sampleName+".root"); file.cd();
-
   if(file.IsZombie()) return;
 
   gROOT->cd();
