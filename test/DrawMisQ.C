@@ -1,5 +1,9 @@
-void DrawMisQ()
+TString gSampleLoc;
+
+void DrawMisQ(TString sampleLoc)
 {
+  gSampleLoc = sampleLoc;
+
   gInterpreter->LoadMacro("libValidation.C");
   gStyle->SetOptStat(0);
 
@@ -80,7 +84,9 @@ void DrawMisQ()
 
 void DrawMisQ(TString sampleName, TString muonType)
 {
-  TFile file(sampleName+".root"); file.cd();
+  TFile file(gSampleLoc+"/"+sampleName+".root"); 
+  if(file.IsZombie()) return;
+  file.cd();
 
   TH1F* hMisQ = (TH1F*)file.Get(muonType+"MisQAboutEta");
   TH1F* hRec  = (TH1F*)((TH2F*)file.Get(muonType+"EtaVsPhi"))->ProjectionX();
