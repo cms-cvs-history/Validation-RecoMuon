@@ -33,9 +33,11 @@ void DrawResVsEta(TString sampleName, TString muonType, TVirtualPad* pad)
 {
   pad->SetGridx(); pad->SetGridy();
   TFile file(sampleName+".root"); file.cd();
+  if(file.IsZombie()) return;
 
   gROOT->cd();
   TH2F* his = (TH2F*)(file.Get(muonType+"EtaVsErrQPt")->Clone());
+
   his->Rebin2D(1,2);
 
   his->SetTitle(sampleName+muonType+" Muon #eta vs #sigma(q/p_{T})");

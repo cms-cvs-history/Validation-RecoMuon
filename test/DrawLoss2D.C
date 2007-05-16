@@ -17,7 +17,9 @@ void DrawLoss2D(TString sampleLoc)
 void DrawLoss2D(TString sampleName, TString muonType1, TString muonType2, TVirtualPad* pad)
 {
   pad->SetGridx(); pad->SetGridy();
-  TFile file(gSampleLoc+sampleName+".root"); file.cd();
+  TFile file(gSampleLoc+sampleName+".root"); 
+  if(file.IsZombie()) return;
+  file.cd();
 
   TH2F* hRec = (TH2F*)file.Get(muonType1+"EtaVsPhi");
   TH2F* hSim = (TH2F*)file.Get(muonType2+"EtaVsPhi");
