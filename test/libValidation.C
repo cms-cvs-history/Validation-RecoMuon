@@ -35,8 +35,9 @@ TH1F* FoldH1(TH1F* hist)
 
 double gMeanMax, gWidthMin, gWidthMax, gChi2Max;
 void DrawFitSlice(TString dataName, TString muonType, TString histoName,
-                  TCanvas* cMean, TCanvas* cWidth, TCanvas* cChi2)
-{
+		  //                  TCanvas* cMean, TCanvas* cWidth, TCanvas* cChi2){
+                  TVirtualPad* cMean, TVirtualPad* cWidth, TVirtualPad* cChi2){
+
   gROOT->cd();
   TFile file(dataName+".root"); 
   if(file.IsZombie()) return;
