@@ -1,0 +1,19 @@
+service = MessageLogger {
+                                 untracked vstring destinations = { "cout" }
+ 
+                                 untracked vstring debugModules = { "*" }
+ 
+                                 untracked vstring categories = { "RecoMuon"}
+
+        untracked PSet cout = {
+                                 untracked string threshold = "DEBUG"
+                                 untracked bool noLineBreaks = true
+                                 untracked PSet DEBUG = {untracked int32 limit = 0 }
+                                 untracked PSet RecoMuon = {untracked int32 limit = 10000000}
+#				 untracked PSet DetLayers = {untracked int32 limit = 0}
+                              }
+ 
+        }
+                                                                                                                                    
+#       service = EnableFloatingPointExceptions {}
+#       service = Tracer {}
