@@ -2,7 +2,7 @@ module SingleMuonValidator = RecoMuonValidator {
     using ValidationHistoParameters
     using MuonServiceProxy
 
-    InputTag StaTrack = standAloneMuons
+    InputTag StaTrack = standAloneMuons:UpdatedAtVtx
     InputTag GlbTrack = globalMuons
     InputTag SimTrack = g4SimHits
     InputTag TkTrack  = ctfWithMaterialTracks
