@@ -6,6 +6,8 @@ include "RecoMuon/DetLayers/data/muonDetLayerGeometry.cfi"
 
 include "RecoMuon/TrackingTools/data/MuonServiceProxy.cff"
 
+service = DaqMonitorROOTBackEnd{}
+
 block ValidationHistoParameters = {
     untracked double minPt  = 0    # minimum pT
     untracked double maxPt  = 5000 # maximum pT
