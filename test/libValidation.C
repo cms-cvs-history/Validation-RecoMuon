@@ -25,9 +25,12 @@ TH1F* FoldH1(TH1F* hist)
   double newXMax = TMath::Max(-xMin, xMax);
   TH1F* newHist = new TH1F(TString(hist->GetName())+"fold", hist->GetTitle(), nBins, 0, newXMax);
 
-  for(int i=0; i<nBins; i++) {
-    newHist->SetBinContent(i, hist->GetBinContent(nBins+i)+hist->GetBinContent(nBins-i-1));
+  for(int i=1; i<=nBins+1; i++) {
+    newHist->SetBinContent(i, hist->GetBinContent(nBins+i)+hist->GetBinContent(nBins+1-i));
   }
+
+  
+
 
   //delete hist;
   return newHist;
