@@ -1,0 +1,6 @@
+module muonSeedTrack = MuonSeedTrack {
+    using MuonServiceProxy
+    using MuonUpdatorAtVertex
+    
+    InputTag MuonSeed = MuonSeed
+}
