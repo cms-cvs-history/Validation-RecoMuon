@@ -1,0 +1,18 @@
+// Put here the modules you want the cfg file to use,
+// then include this file in your cfg file.
+// i.e. in MatchValidator.cfg replace 'module demo = MatchValidator {} '
+// with 'include "anlyzerDir/MatchValidator/data/MatchValidator.cfi" '.
+// (Remember that filenames are case sensitive.)
+
+module globalMuonMatchAnalyzer = GlobalMuonMatchAnalyzer {
+    untracked string out = "GlobalMatchValidator.root"
+
+    untracked string tkAssociator = "TrackAssociatorByHits"
+    untracked string muAssociator = "TrackAssociatorByPosition"
+
+    untracked InputTag tpLabel = cutsTPEffic
+    untracked InputTag glbLabel = globalMuons
+    untracked InputTag muLabel = standAloneMuons:UpdatedAtVtx
+    untracked InputTag tkLabel = ctfWithMaterialTracks
+
+}
