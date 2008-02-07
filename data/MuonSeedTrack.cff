@@ -1,8 +1,5 @@
 include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
 
-include "RecoMuon/TrackingTools/data/MuonServiceProxy.cff"
-include "RecoMuon/TrackingTools/data/MuonUpdatorAtVertex.cff"
-
 include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cff" 
 include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
 include "RecoMuon/DetLayers/data/muonDetLayerGeometry.cfi"
