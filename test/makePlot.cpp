@@ -33,13 +33,13 @@ public:
 
 protected:
   bool saveEfficiency(const string& histName, const string& histTitle, 
-		      const string& numeHistName, const string& denoHistName);
+                      const string& numeHistName, const string& denoHistName);
   bool saveBayesEfficiency(const string& graphName, const string& graphTitle,
-			   const string& numeHistName, const string& denoHistName);
+                           const string& numeHistName, const string& denoHistName);
   bool saveFakeRate(const string& histName, const string& histTitle,
-		    const string& numeHistName, const string& denoHistName);
+                    const string& numeHistName, const string& denoHistName);
   bool saveResolution(const string& histName, const string& histTitle, 
-		      const string& srcHistName, const char sliceDirection = 'Y');
+                      const string& srcHistName, const char sliceDirection = 'Y');
   bool dumpObject(const string& objName, const string& objTitle, const string& srcObjName);
 
 protected:
@@ -67,13 +67,9 @@ int main(int argc, const char* argv[])
     outFileName = argv[2];
   }
   else {
-    cout << "Running makePlot under interactive mode" << endl;
-
-    cout << "Type your source root file name" << endl;
-    cin >> srcFileName;
-    
-    cout << "Type your output root file name" << endl;
-    cin >> outFileName;
+    cout << "Usage : " << argv[0] << " sourceFile.root outputFile.root < commands.txt" << endl;
+    cout << "Usage : " << argv[0] << " sourceFile.root outputFile.root" << endl;
+    return 1;
   }
 
   PlotManager plotMan(srcFileName, outFileName);
@@ -102,48 +98,48 @@ void PlotManager::processCommand(istream& in)
     vector<tokenizer<elsc>::value_type> args;
 
     for(tokenizer<elsc>::const_iterator tok_iter = tokens.begin();
-	tok_iter != tokens.end(); ++tok_iter) {
+        tok_iter != tokens.end(); ++tok_iter) {
       args.push_back(*tok_iter);
     }
 
     if ( cmd == "EFFICIENCY" && args.size() >= 4 ) {
       if ( !saveEfficiency(args[0], args[1], args[2], args[3]) ) {
-	cerr << "Error : cannot make efficiency plot" << endl;
+        cerr << "Error : cannot make efficiency plot" << endl;
       }
       continue;
     }
 
     if ( cmd == "BAYESIANEFFICIENCY" && args.size() >= 4 ) {
       if ( !saveBayesEfficiency(args[0], args[1], args[2], args[3]) ) {
-	cerr << "Error : cannot make bayesian efficiency plot" << endl;
+        cerr << "Error : cannot make bayesian efficiency plot" << endl;
       }
       continue;
     }
     
     if ( cmd == "FAKERATE" && args.size() == 4 ) {
       if ( !saveFakeRate(args[0], args[1], args[2], args[3]) ) {
-	cerr << "Error : cannot make fakerate plot" << endl;
+        cerr << "Error : cannot make fakerate plot" << endl;
       }
       continue;
     }
     
     if ( cmd == "RESOLUTIONX" && args.size() == 3 ) {
       if ( !saveResolution(args[0], args[1], args[2], 'X') ) {
-	cerr << "Error : cannot make resolution-X plot" << endl;
+        cerr << "Error : cannot make resolution-X plot" << endl;
       }
       continue;
     }
     
     if ( cmd == "RESOLUTIONY" && args.size() == 3 ) {
       if ( !saveResolution(args[0], args[1], args[2], 'Y') ) {
-	cerr << "Error : cannot make resolution-Y plot" << endl;
+        cerr << "Error : cannot make resolution-Y plot" << endl;
       }
       continue;
     }
     
     if ( cmd == "DUMP" && args.size() == 3 ) {
       if ( !dumpObject(args[0], args[1], args[2]) ) {
-	cerr << "Error : cannot copy histogram" << endl;
+        cerr << "Error : cannot copy histogram" << endl;
       }
       continue;
     }
@@ -200,7 +196,7 @@ bool PlotManager::setOutFile(const string& fileName)
 }
 
 bool PlotManager::saveEfficiency(const string& histName, const string& histTitle, 
-				 const string& numeHistName, const string& denoHistName)
+                                 const string& numeHistName, const string& denoHistName)
 {
   if ( ! isSetup_ ) return false;
 
@@ -208,8 +204,12 @@ bool PlotManager::saveEfficiency(const string& histName, const string& histTitle
   TH1F* denoHist = dynamic_cast<TH1F*>(theSrcFile_->Get(denoHistName.c_str()));
   
   // Check validity of objects
-  if ( numeHist == 0 || denoHist == 0 ) {
-    cerr << "Cannot get object" << endl;
+  if ( numeHist == 0 ) {
+    cerr << "Cannot get object : " << numeHistName << endl;
+    return false;
+  }
+  if ( denoHist == 0 ) {
+    cerr << "Cannot get object : " << denoHistName << endl;
     return false;
   }
 
@@ -241,7 +241,7 @@ bool PlotManager::saveEfficiency(const string& histName, const string& histTitle
   }
 
   // Create new histogram
-  TH1F* effHist = dynamic_cast<TH1F*>(numeHist->Clone());
+  TH1F* effHist = dynamic_cast<TH1F*>(numeHist->Clone(newHistName.c_str()));
   
   // effHist->Divide(denoHist);
   // Set the error to binomial statistics
@@ -259,24 +259,24 @@ bool PlotManager::saveEfficiency(const string& histName, const string& histTitle
   }
 
   // Cosmetics
-  effHist->SetName(newHistName.c_str());
+  //effHist->SetName(newHistName.c_str());
   effHist->SetTitle(histTitle.c_str());
-  effHist->SetMinimum(0.8);
+  effHist->SetMinimum(0.0);
   effHist->SetMaximum(1.0);
   effHist->GetXaxis()->SetTitle(numeHist->GetXaxis()->GetTitle());
-  effHist->GetXaxis()->SetTitle("Efficiency");
+  effHist->GetYaxis()->SetTitle("Efficiency");
 
   // Save histogram
   effHist->Write();
 
   // Pop directory
   gDirectory->cd(pwd.c_str());
-			   
+                           
   return true;
 }
 
 bool PlotManager::saveBayesEfficiency(const string& graphName, const string& graphTitle,
-				      const string& numeHistName, const string& denoHistName)
+                                      const string& numeHistName, const string& denoHistName)
 {
   if ( ! isSetup_ ) return false;
   
@@ -285,7 +285,7 @@ bool PlotManager::saveBayesEfficiency(const string& graphName, const string& gra
   
   // Check validity of objects
   if ( numeHist == 0 || denoHist == 0 ) {
-    cerr << "Cannot get object" << endl;
+    cerr << "Cannot get object : " << graphName << endl;
     return false;
   }
 
@@ -325,7 +325,7 @@ bool PlotManager::saveBayesEfficiency(const string& graphName, const string& gra
   effGraph->SetMinimum(0.8);
   effGraph->SetMaximum(1.0);
   effGraph->GetXaxis()->SetTitle(numeHist->GetXaxis()->GetTitle());
-  effGraph->GetXaxis()->SetTitle("Efficiency");
+  effGraph->GetYaxis()->SetTitle("Efficiency");
 
   // Save histogram
   effGraph->Write();
@@ -337,7 +337,7 @@ bool PlotManager::saveBayesEfficiency(const string& graphName, const string& gra
 }
 
 bool PlotManager::saveFakeRate(const string& histName, const string& histTitle,
-			       const string& numeHistName, const string& denoHistName)
+                               const string& numeHistName, const string& denoHistName)
 {
   if ( ! isSetup_ ) return false;
   
@@ -346,7 +346,7 @@ bool PlotManager::saveFakeRate(const string& histName, const string& histTitle,
   
   // Check validity of objects
   if ( numeHist == 0 || denoHist == 0 ) {
-    cerr << "Cannot get object" << endl;
+    cerr << "Cannot get object : " << histName << endl;
     return false;
   }
 
@@ -401,19 +401,19 @@ bool PlotManager::saveFakeRate(const string& histName, const string& histTitle,
   fakeHist->SetMinimum(0.8);
   fakeHist->SetMaximum(1.0);
   fakeHist->GetXaxis()->SetTitle(numeHist->GetXaxis()->GetTitle());
-  fakeHist->GetXaxis()->SetTitle("Efficiency");
+  fakeHist->GetYaxis()->SetTitle("Efficiency");
 
   // Save histogram
   fakeHist->Write();
 
   // Pop directory
   gDirectory->cd(pwd.c_str());
-			   
+                           
   return true;
 }
 
 bool PlotManager::saveResolution(const string& histName, const string& histTitle, 
-  			         const string& srcHistName, const char sliceDirection)
+                                   const string& srcHistName, const char sliceDirection)
 {
   if ( ! isSetup_ ) return false;
   
@@ -421,7 +421,7 @@ bool PlotManager::saveResolution(const string& histName, const string& histTitle
 
   // Check validity of objects
   if ( srcHist == NULL ) {
-    cerr << "Cannot get object" << endl;
+    cerr << "Cannot get object : " << histName << endl;
     return false;
   }
   
@@ -479,8 +479,8 @@ bool PlotManager::saveResolution(const string& histName, const string& histTitle
 }
 
 bool PlotManager::dumpObject(const string& objName,
-			     const string& objTitle,
-			     const string& srcObjName)
+                             const string& objTitle,
+                             const string& srcObjName)
 {
   if ( ! isSetup_ ) return false;
   
@@ -506,7 +506,6 @@ bool PlotManager::dumpObject(const string& objName,
   }
 
   TNamed* saveObj = dynamic_cast<TNamed*>(srcObj->Clone(newObjName.c_str()));
-//  saveObj->SetName(newObjName.c_str());
   saveObj->SetTitle(objTitle.c_str());
   
   // Save histogram
