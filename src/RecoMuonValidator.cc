@@ -13,11 +13,8 @@
 
 #include "Validation/RecoMuon/src/MuonSimRecoMatching.h"
 
-#include "PhysicsTools/UtilAlgos/interface/TFileService.h"
 #include "DQMServices/Core/interface/DQMStore.h"
-
-#include <TH1F.h>
-#include <TH2F.h>
+#include "DQMServices/Core/interface/MonitorElement.h"
 
 #include <memory>
 #include <algorithm>
@@ -36,14 +33,13 @@ typedef MuColl::const_iterator MuCIter;
 class MuonHisto
 {
 public:
-  typedef map<string, TH1*> HistMap;
+  typedef map<string, MonitorElement*> HistMap;
 
   MuonHisto():isParamsSet_(false), isBooked_(false) {};
 
   MuonHisto(const ParameterSet& pset)
   {
     theDQMService   = 0;
-    theTFileService = 0;
 
     isParamsSet_ = false;
     isBooked_ = false;
@@ -80,20 +76,10 @@ public:
   void bookHistograms(DQMStore * dqm)
   {
     if ( ! dqm ) return;
-    if ( theDQMService || theTFileService ) return;
+    if ( theDQMService ) return;
 
     theDQMService = dqm;
     dqm->setCurrentFolder(subDir_.c_str());
-    bookHistograms();
-  };
-
-  void bookHistograms(TFileService* fs)
-  {
-    if ( ! fs ) return;
-    if ( theDQMService || theTFileService ) return;
-
-    theTFileService = fs;
-    theTFileDirectory = new TFileDirectory(fs->mkdir(subDir_));
     bookHistograms();
   };
 
@@ -117,11 +103,11 @@ public:
     if ( simEta < minEta_ || simEta > maxEta_ ) return;
     if ( simPhi < minPhi_ || simPhi > maxPhi_ ) return;
 
-    TH1F * h1;
+    MonitorElement* me;
 
-    if ( h1 = (TH1F*)(theHistMap["SimPt" ]) ) h1->Fill(simPt );
-    if ( h1 = (TH1F*)(theHistMap["SimEta"]) ) h1->Fill(simEta);
-    if ( h1 = (TH1F*)(theHistMap["SimPhi"]) ) h1->Fill(simPhi);
+    if ( me = theHistMap["SimPt" ] ) me->Fill(simPt );
+    if ( me = theHistMap["SimEta"] ) me->Fill(simEta);
+    if ( me = theHistMap["SimPhi"] ) me->Fill(simPhi);
   };
 
   // run this for matched sim-reco pairs
@@ -166,15 +152,14 @@ public:
     const double recoQOverPt = recoQ/recoPt;
     if ( isnan(recoQOverPt) || isinf(recoQOverPt) ) return;
 
-    TH1F * h1;
-    TH2F * h2;
+    MonitorElement* me;
 
-    if ( h1 = (TH1F*)(theHistMap["RecoPt" ]) ) h1->Fill(simPt );
-    if ( h1 = (TH1F*)(theHistMap["RecoEta"]) ) h1->Fill(simEta);
-    if ( h1 = (TH1F*)(theHistMap["RecoPhi"]) ) h1->Fill(simPhi);
+    if ( me = theHistMap["RecoPt" ] ) me->Fill(simPt );
+    if ( me = theHistMap["RecoEta"] ) me->Fill(simEta);
+    if ( me = theHistMap["RecoPhi"] ) me->Fill(simPhi);
 
-    if ( h2 = (TH2F*)(theHistMap["ErrPtVsEta"]) ) h2->Fill(simEta, (recoPt-simPt)/simPt);
-    if ( h2 = (TH2F*)(theHistMap["ErrQOverPtVsEta"]) ) h2->Fill(simEta, (recoQOverPt-simQOverPt)/simQOverPt);
+    if ( me = theHistMap["ErrPtVsEta"] ) me->Fill(simEta, (recoPt-simPt)/simPt);
+    if ( me = theHistMap["ErrQOverPtVsEta"] ) me->Fill(simEta, (recoQOverPt-simQOverPt)/simQOverPt);
   };
 
 protected:
@@ -223,28 +208,22 @@ protected:
 
   void book1D(string name, string title, int nBin, double min, double max)
   {
-    TH1F * histo = 0;
+    MonitorElement* me = 0;
     if ( theDQMService ) {
-      histo = (TH1F*)(theDQMService->book1D(name, title, nBin, min, max));
+      me = theDQMService->book1D(name, title, nBin, min, max);
     }
-    else if ( theTFileService ) {
-      histo = theTFileDirectory->make<TH1F>(name.c_str(), title.c_str(), nBin, min, max);
-    }
-    theHistMap.insert(HistMap::value_type(name, histo));
+    theHistMap.insert(HistMap::value_type(name, me));
   };
 
   void book2D(string name, string title,
               int nBinX, double minX, double maxX,
               int nBinY, double minY, double maxY)
   {
-    TH2F * histo = 0;
+    MonitorElement* me = 0;
     if ( theDQMService ) {
-      histo = (TH2F*)(theDQMService->book2D(name, title, nBinX, minX, maxX, nBinY, minY, maxY));
+      me = theDQMService->book2D(name, title, nBinX, minX, maxX, nBinY, minY, maxY);
     }
-    else if ( theTFileService ) {
-      histo = theTFileDirectory->make<TH2F>(name.c_str(), title.c_str(), nBinX, minX, maxX, nBinY, minY, maxY);
-    }
-    theHistMap.insert(HistMap::value_type(name,histo));
+    theHistMap.insert(HistMap::value_type(name,me));
   };
 
 protected:
@@ -259,15 +238,12 @@ protected:
   bool doAbsEta_;
 
   DQMStore * theDQMService;
-  TFileService * theTFileService;
-  TFileDirectory * theTFileDirectory;
 
   HistMap theHistMap;
 };
 
 RecoMuonValidator::RecoMuonValidator(const ParameterSet& pset)
 {
-  histoManager_ = pset.getUntrackedParameter<string>("histoManager", "DQM");
   outputFileName_ = pset.getUntrackedParameter<string>("outputFileName");
 
   // Track Labels
@@ -283,14 +259,7 @@ RecoMuonValidator::RecoMuonValidator(const ParameterSet& pset)
 
   // Set histogram manager
   theDQMService   = 0;
-  theTFileService = 0;
-
-  if ( histoManager_ == "DQM" ) {
-    theDQMService = Service<DQMStore>().operator->();
-  }
-  else if ( histoManager_ == "TFileService" ) {
-    theTFileService = Service<TFileService>().operator->();
-  }
+  theDQMService = Service<DQMStore>().operator->();
 
   MuonHisto staMuonDeltaRHisto(pset.getParameter<ParameterSet>("StaMuonHistoParameters"));
   fillHisto_.insert(map<string, MuonHisto>::value_type("StaMuonDeltaR", staMuonDeltaRHisto));
@@ -307,19 +276,13 @@ RecoMuonValidator::~RecoMuonValidator()
 void RecoMuonValidator::beginJob(const EventSetup& eventSetup)
 {
   if ( ! theMuonService ) return;
-  if ( ! theDQMService && ! theTFileService  ) return;
+  if ( ! theDQMService  ) return;
 
   if ( theDQMService ) {
     LogDebug("RecoMuonValidator::beginJob") << "Booking DQM histograms" << endl;
 
     fillHisto_["StaMuonDeltaR"].bookHistograms(theDQMService);
     fillHisto_["GlbMuonDeltaR"].bookHistograms(theDQMService);
-  }
-  else if ( theTFileService ) {
-    LogDebug("RecoMuonValidator::beginJob") << "Booking TFileService histograms" << endl;
-
-    fillHisto_["StaMuonDeltaR"].bookHistograms(theTFileService);
-    fillHisto_["GlbMuonDeltaR"].bookHistograms(theTFileService);
   }
 }
 
@@ -382,7 +345,7 @@ class GlbMuonDeltaR : public MuonDeltaR
 void RecoMuonValidator::analyze(const Event& event, const EventSetup& eventSetup)
 {
   if ( ! theMuonService ) return;
-  if ( ! theDQMService  && ! theTFileService ) return;
+  if ( ! theDQMService  ) return;
 
   theMuonService->update(eventSetup);
 

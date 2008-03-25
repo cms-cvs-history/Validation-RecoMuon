@@ -16,8 +16,6 @@
 
 class MuonHisto;
 class DQMStore;
-class TFileService;
-class TFileDirectory;
 
 class RecoMuonValidator : public edm::EDAnalyzer
 {
@@ -35,12 +33,9 @@ class RecoMuonValidator : public edm::EDAnalyzer
   //edm::InputTag staMuonLabel_;
   //edm::InputTag glbMuonLabel_;
   
-  std::string histoManager_;
   std::string outputFileName_;
 
   DQMStore * theDQMService;
-  TFileService * theTFileService;
-  TFileDirectory * theTFileDirectory;
   
   MuonServiceProxy * theMuonService;
   std::string seedPropagatorName_;

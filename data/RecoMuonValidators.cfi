@@ -23,7 +23,6 @@ block RecoMuonHistoDefaults = {
 module recoMuonValidation = RecoMuonValidator {
     using MuonServiceProxy
 
-    untracked string histoManager = "DQM"
     untracked string outputFileName = "RecoMuonValidation.root"
 
     InputTag SimPtcl = "trackingParticles"
