@@ -84,7 +84,6 @@ class SimRecoTable
         nPair++;
       }
     }
-    std::cout << "# of best matching pairs = " << nPair << std::endl;
   }; 
 
   void getUnmatched(SimPtcls& targetList)
