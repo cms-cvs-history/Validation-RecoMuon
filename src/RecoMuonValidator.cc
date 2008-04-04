@@ -77,10 +77,49 @@ public:
   {
     if ( ! dqm ) return;
     if ( theDQMService ) return;
+    if ( ! isParamsSet() ) return;
+    if ( isBooked() ) return;
 
     theDQMService = dqm;
     dqm->setCurrentFolder(subDir_.c_str());
-    bookHistograms();
+
+    book1D("SimPt", "Sim p_{T}", nBinPt_, minPt_, maxPt_);
+    book1D("RecoPt" , "Reco p_{T}", nBinPt_ , minPt_ , maxPt_ );
+    book1D("SimEta" , "Sim #eta"  , nBinEta_, minEta_, maxEta_);
+    book1D("RecoEta", "Reco #eta" , nBinEta_, minEta_, maxEta_);
+    book1D("SimPhi" , "Sim #phi"  , nBinPhi_, minPhi_, maxPhi_);
+    book1D("RecoPhi", "Reco #phi" , nBinPhi_, minPhi_, maxPhi_);
+    book2D("ErrPtVsEta", "#Delta{}p_{T}/p_{T} vs #eta",
+           nBinEta_, minEta_, maxEta_, nBinErrPt_, -wErrPt_, wErrPt_);
+    book2D("ErrQOverPtVsEta", "(#Delta{}q/p_{T})/(q/p_{T}) vs #eta",
+           nBinEta_, minEta_, maxEta_, nBinErrQOverPt_, -wErrQOverPt_, wErrQOverPt_);
+
+    // p_T pulls
+    book2D("PullPtVsPt" , "Pull p_{T} vs p_{T}",
+           nBinPt_ , minPt_ , maxPt_ , nBinPull_, -wPull_, wPull_);
+    book2D("PullPtVsEta", "Pull p_{T} vs #eta",
+           nBinEta_, minEta_, maxEta_, nBinPull_, -wPull_, wPull_);
+    book2D("PullPtVsPhi", "Pull p_{T} vs #phi",
+           nBinPhi_, minPhi_, maxPhi_, nBinPull_, -wPull_, wPull_);
+
+    // eta pulls
+    book2D("PullEtaVsPt" , "Pull #eta vs p_{T}",
+           nBinPt_ , minPt_ , maxPt_ , nBinPull_, -wPull_, wPull_);
+    book2D("PullEtaVsEta", "Pull #eta vs #eta",
+           nBinEta_, minEta_, maxEta_, nBinPull_, -wPull_, wPull_);
+    book2D("PullEtaVsPhi", "Pull #eta vs #phi",
+           nBinPhi_, minPhi_, maxPhi_, nBinPull_, -wPull_, wPull_);
+
+    // phi pulls
+    book2D("PullPhiVsPt" , "Pull #phi vs #pt",
+           nBinPt_ , minPt_ , maxPt_ , nBinPull_, -wPull_, wPull_);
+    book2D("PullPhiVsEta", "Pull #phi vs #eta",
+           nBinEta_, minEta_, maxEta_, nBinPull_, -wPull_, wPull_);
+    book2D("PullPhiVsPhi", "Pull #phi vs #phi",
+           nBinPhi_, minPhi_, maxPhi_, nBinPull_, -wPull_, wPull_);
+
+    isBooked_ = true;
+
   };
 
   ~MuonHisto() {};
@@ -163,49 +202,6 @@ public:
   };
 
 protected:
-  void bookHistograms()
-  {
-    if ( ! isParamsSet() ) return;
-    if ( isBooked() ) return;
-
-    book1D("SimPt", "Sim p_{T}", nBinPt_, minPt_, maxPt_);
-    book1D("RecoPt" , "Reco p_{T}", nBinPt_ , minPt_ , maxPt_ );
-    book1D("SimEta" , "Sim #eta"  , nBinEta_, minEta_, maxEta_);
-    book1D("RecoEta", "Reco #eta" , nBinEta_, minEta_, maxEta_);
-    book1D("SimPhi" , "Sim #phi"  , nBinPhi_, minPhi_, maxPhi_);
-    book1D("RecoPhi", "Reco #phi" , nBinPhi_, minPhi_, maxPhi_);
-    book2D("ErrPtVsEta", "#Delta{}p_{T}/p_{T} vs #eta",
-           nBinEta_, minEta_, maxEta_, nBinErrPt_, -wErrPt_, wErrPt_);
-    book2D("ErrQOverPtVsEta", "(#Delta{}q/p_{T})/(q/p_{T}) vs #eta",
-           nBinEta_, minEta_, maxEta_, nBinErrQOverPt_, -wErrQOverPt_, wErrQOverPt_);
-
-    // p_T pulls
-    book2D("PullPtVsPt" , "Pull p_{T} vs p_{T}",
-           nBinPt_ , minPt_ , maxPt_ , nBinPull_, -wPull_, wPull_);
-    book2D("PullPtVsEta", "Pull p_{T} vs #eta",
-           nBinEta_, minEta_, maxEta_, nBinPull_, -wPull_, wPull_);
-    book2D("PullPtVsPhi", "Pull p_{T} vs #phi",
-           nBinPhi_, minPhi_, maxPhi_, nBinPull_, -wPull_, wPull_);
-
-    // eta pulls
-    book2D("PullEtaVsPt" , "Pull #eta vs p_{T}",
-           nBinPt_ , minPt_ , maxPt_ , nBinPull_, -wPull_, wPull_);
-    book2D("PullEtaVsEta", "Pull #eta vs #eta",
-           nBinEta_, minEta_, maxEta_, nBinPull_, -wPull_, wPull_);
-    book2D("PullEtaVsPhi", "Pull #eta vs #phi",
-           nBinPhi_, minPhi_, maxPhi_, nBinPull_, -wPull_, wPull_);
-
-    // phi pulls
-    book2D("PullPhiVsPt" , "Pull #phi vs #pt",
-           nBinPt_ , minPt_ , maxPt_ , nBinPull_, -wPull_, wPull_);
-    book2D("PullPhiVsEta", "Pull #phi vs #eta",
-           nBinEta_, minEta_, maxEta_, nBinPull_, -wPull_, wPull_);
-    book2D("PullPhiVsPhi", "Pull #phi vs #phi",
-           nBinPhi_, minPhi_, maxPhi_, nBinPull_, -wPull_, wPull_);
-
-    isBooked_ = true;
-  };
-
   void book1D(string name, string title, int nBin, double min, double max)
   {
     MonitorElement* me = 0;
