@@ -26,9 +26,9 @@ using namespace reco;
 
 typedef TrajectoryStateOnSurface TSOS;
 typedef TrackingParticleCollection TPColl;
-typedef TPColl::const_iterator TPCIter;
+typedef TrackingParticleRef TPRef;
 typedef MuonCollection MuColl;
-typedef MuColl::const_iterator MuCIter;
+typedef reco::MuonRef MuRef;
 
 class MuonHisto
 {
@@ -125,22 +125,22 @@ public:
   ~MuonHisto() {};
 
   // run this for unmatched sim particles
-  void operator()(const TPCIter& iSimPtcl)
+  void operator()(const TPRef simPtcl)
   {
     if ( ! isValid() ) return;
 
-    const double simPt  = iSimPtcl->pt() ;
-    if ( isnan(simPt)  || isinf(simPt)  ) return;
+    const double simPt  = simPtcl->pt() ;
+//    if ( isnan(simPt)  || isinf(simPt)  ) return;
 
-    const double simEta = doAbsEta_ ? fabs(iSimPtcl->eta()) : iSimPtcl->eta();
-    if ( isnan(simEta) || isinf(simEta) ) return;
+    const double simEta = doAbsEta_ ? fabs(simPtcl->eta()) : simPtcl->eta();
+//    if ( isnan(simEta) || isinf(simEta) ) return;
 
-    const double simPhi = iSimPtcl->phi();
-    if ( isnan(simPhi) || isinf(simPhi) ) return;
+    const double simPhi = simPtcl->phi();
+//    if ( isnan(simPhi) || isinf(simPhi) ) return;
 
-    if ( simPt < minPt_ ) return;
-    if ( simEta < minEta_ || simEta > maxEta_ ) return;
-    if ( simPhi < minPhi_ || simPhi > maxPhi_ ) return;
+//    if ( simPt < minPt_ ) return;
+//    if ( simEta < minEta_ || simEta > maxEta_ ) return;
+//    if ( simPhi < minPhi_ || simPhi > maxPhi_ ) return;
 
     MonitorElement* me;
 
@@ -150,32 +150,32 @@ public:
   };
 
   // run this for matched sim-reco pairs
-  void operator()(const std::pair<TPCIter, MuCIter>& matchedPair)
+  void operator()(const std::pair<TPRef, MuRef>& matchedPair)
   {
     if ( ! isValid() ) return;
 
-    TPCIter iSimPtcl  = matchedPair.first;
-    MuCIter iRecoMuon = matchedPair.second;
+    TPRef simPtcl  = matchedPair.first;
+    MuRef iRecoMuon = matchedPair.second;
 
     // all variables to be compared
-    const double simPt  = iSimPtcl->pt() ;
-    if ( isnan(simPt)  || isinf(simPt)  ) return;
+    const double simPt  = simPtcl->pt() ;
+//    if ( isnan(simPt)  || isinf(simPt)  ) return;
 
-    const double simEta = doAbsEta_ ? fabs(iSimPtcl->eta()) : iSimPtcl->eta();
-    if ( isnan(simEta) || isinf(simEta) ) return;
+    const double simEta = doAbsEta_ ? fabs(simPtcl->eta()) : simPtcl->eta();
+//    if ( isnan(simEta) || isinf(simEta) ) return;
 
-    const double simPhi = iSimPtcl->phi();
-    if ( isnan(simPhi) || isinf(simPhi) ) return;
+    const double simPhi = simPtcl->phi();
+//    if ( isnan(simPhi) || isinf(simPhi) ) return;
 
-    const TrackCharge simQ = iSimPtcl->charge();
+    const TrackCharge simQ = simPtcl->charge();
     const double simQOverPt = simQ/simPt;
-    if ( isnan(simQOverPt) || isinf(simQOverPt) ) return;
+//    if ( isnan(simQOverPt) || isinf(simQOverPt) ) return;
 
-    if ( simPt < minPt_ ) return;
-    if ( simEta < minEta_ || simEta > maxEta_ ) return;
-    if ( simPhi < minPhi_ || simPhi > maxPhi_ ) return;
+//    if ( simPt < minPt_ ) return;
+//    if ( simEta < minEta_ || simEta > maxEta_ ) return;
+//    if ( simPhi < minPhi_ || simPhi > maxPhi_ ) return;
 
-    this->operator()(iSimPtcl);
+    this->operator()(simPtcl);
 
     const double recoPt  = iRecoMuon->pt() ;
     if ( isnan(recoPt)  || isinf(recoPt)  ) return;
@@ -346,44 +346,51 @@ void RecoMuonValidator::analyze(const Event& event, const EventSetup& eventSetup
   theMuonService->update(eventSetup);
 
   // Retrieve sim particles, reco muons, etc.
-  Handle<TPColl> simPtcls;
-  Handle<MuColl> recoMuons;
+  Handle<TPColl> staSimPtcls;
+  Handle<TPColl> glbSimPtcls;
+  Handle<MuColl> staRecoMuons;
+  Handle<MuColl> glbRecoMuons;
 
   // Retrieve sim, reco objects from event handler
-  event.getByLabel(simPtclLabel_, simPtcls);
-  event.getByLabel(recoMuonLabel_, recoMuons);
+  event.getByLabel(simPtclLabel_, staSimPtcls);
+  event.getByLabel(simPtclLabel_, glbSimPtcls);
+  event.getByLabel(recoMuonLabel_, staRecoMuons);
+  event.getByLabel(recoMuonLabel_, glbRecoMuons);
 
   // Create Sim to Reco Table
   LogDebug("RecoMuonValidator::analyze") << "Building Sim to Reco matching table" << endl; 
 
-  SimRecoTable<StaMuonDeltaR> staMuonDeltaRTable(simPtcls, recoMuons, StaMuonDeltaR(1.));
-  SimRecoTable<GlbMuonDeltaR> glbMuonDeltaRTable(simPtcls, recoMuons, GlbMuonDeltaR(1.));
+  typedef SimRecoTable<StaMuonDeltaR> StaDRTab;
+  typedef SimRecoTable<GlbMuonDeltaR> GlbDRTab; 
+
+  StaDRTab staDRTab(staSimPtcls, staRecoMuons, StaMuonDeltaR(1.));
+  GlbDRTab glbDRTab(glbSimPtcls, glbRecoMuons, GlbMuonDeltaR(1.));
 
   // Get best matched pairs
   LogDebug("RecoMuonValidator::analyze") << "Get matching pairs from the table" << endl; 
 
-  SimRecoTable<StaMuonDeltaR>::Pairs staMuonPairsByDeltaR;
-  staMuonDeltaRTable.getBestMatched(staMuonPairsByDeltaR);
+  StaDRTab::Pairs staPairsDR;
+  staDRTab.getBestMatched(staPairsDR);
 
-  SimRecoTable<GlbMuonDeltaR>::Pairs glbMuonPairsByDeltaR;
-  glbMuonDeltaRTable.getBestMatched(glbMuonPairsByDeltaR);
+  GlbDRTab::Pairs glbPairsDR;
+  glbDRTab.getBestMatched(glbPairsDR);
 
   // Get un-matched pairs
   LogDebug("RecoMuonValidator::analyze") << "Get un-matched simulated muons" << endl; 
 
-  SimRecoTable<StaMuonDeltaR>::SimPtcls unmatchStaMuonDeltaR;
-  staMuonDeltaRTable.getUnmatched(unmatchStaMuonDeltaR);
+  StaDRTab::SimPtcls lostStaDR;
+  staDRTab.getUnmatched(lostStaDR);
 
-  SimRecoTable<GlbMuonDeltaR>::SimPtcls unmatchGlbMuonDeltaR;
-  glbMuonDeltaRTable.getUnmatched(unmatchGlbMuonDeltaR);
+  GlbDRTab::SimPtcls lostGlbDR;
+  glbDRTab.getUnmatched(lostGlbDR);
 
   // Calculate difference bet'n sim-reco objects, fill histograms.
   LogDebug("RecoMuonValidator::analyze") << "Calculate diffrences between sim-reco pairs and fill histograms" << endl; 
 
-  for_each(unmatchStaMuonDeltaR.begin(), unmatchStaMuonDeltaR.end(), fillHisto_["StaMuonDeltaR"]);
-  for_each(staMuonPairsByDeltaR.begin(), staMuonPairsByDeltaR.end(), fillHisto_["StaMuonDeltaR"]);
+  for_each(lostStaDR.begin(), lostStaDR.end(), fillHisto_["StaMuonDeltaR"]);
+  for_each(staPairsDR.begin(), staPairsDR.end(), fillHisto_["StaMuonDeltaR"]);
 
-  for_each(unmatchGlbMuonDeltaR.begin(), unmatchGlbMuonDeltaR.end(), fillHisto_["GlbMuonDeltaR"]);
-  for_each(glbMuonPairsByDeltaR.begin(), glbMuonPairsByDeltaR.end(), fillHisto_["GlbMuonDeltaR"]);
+  for_each(lostGlbDR.begin(), lostGlbDR.end(), fillHisto_["GlbMuonDeltaR"]);
+  for_each(glbPairsDR.begin(), glbPairsDR.end(), fillHisto_["GlbMuonDeltaR"]);
 
 }
