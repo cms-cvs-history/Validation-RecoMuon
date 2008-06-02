@@ -1,47 +1,40 @@
-include "RecoMuon/TrackingTools/data/MuonServiceProxy.cff"
+block RecoMuonHistoDefaults = {
+    untracked uint32 nBinPt = 50
+    untracked double minPt  = 0 
+    untracked double maxPt  = 50
 
-//service = DaqMonitorROOTBackEnd{}
+    untracked bool doAbsEta  = true
+    untracked uint32 nBinEta = 50
+    untracked double minEta  = 0 
+    untracked double maxEta  = 2.4 
 
-block ValidationHistoParameters = {
-    untracked double minPt  = 0    # minimum pT
-    untracked double maxPt  = 5000 # maximum pT
+    untracked uint32 nBinPhi = 50 
 
-    untracked uint32 nBinEta = 98  # number of EtaBin (= 49 in PTDR plots)
-    untracked double minEta = -2.4 # minimum eta
-    untracked double maxEta = 2.4  # maximum eta
+    untracked uint32 nBinErrPt = 50
+    untracked double wErrPt    = 50
 
-    untracked uint32 nBinPhi = 50 # number of phi Bin
-
-    untracked uint32 nBinErrQPt = 300
-    untracked double widthStaErrQPt  = 2 # maximum simga(q/pT) for Standalone muons
-    untracked double widthGlbErrQPt  = 2 # maximum simga(q/pT) for Global muons
-    untracked double widthSeedErrQPt = 3 # maximum sigma(q/pT) for Seeds
+    untracked uint32 nBinErrQOverPt = 50
+    untracked double wErrQOverPt    = 3 
 
     untracked uint32 nBinPull = 50
-    untracked double widthPull = 5
-
-    untracked uint32 nHits = 70
+    untracked double wPull    = 5
 }
 
-module SingleMuonValidator = RecoMuonValidator {
-    using ValidationHistoParameters
+module recoMuonValidation = RecoMuonValidator {
     using MuonServiceProxy
 
-    InputTag StaTrack = standAloneMuons:UpdatedAtVtx
-    InputTag GlbTrack = globalMuons
-    InputTag SimTrack = g4SimHits
-    InputTag TkTrack  = ctfWithMaterialTracks
-    InputTag Seed     = MuonSeed
+    untracked string outputFileName = "RecoMuonValidation.root"
 
-    string subDir = "Offline"
+    InputTag SimPtcl = "trackingParticles"
+    InputTag RecoMuon = muons
 
-    double staMinPt = 1.0
-    double staMinRho = 1.0
-    double staMinR = 2.5
-    double tkMinP = 2.5
-    double tkMinPt = 1.0
+    PSet StaMuonHistoParameters = {
+        using RecoMuonHistoDefaults
+        untracked string subDir = "RecoMuonV/Muon/StaByDeltaR"
+    }
 
-    string SeedPropagator = "SteppingHelixPropagatorAny"
-
-    untracked string outputFileName = "SingleMuonValidation.root"
+    PSet GlbMuonHistoParameters = {
+        using RecoMuonHistoDefaults
+        untracked string subDir = "RecoMuonV/Muon/GlbByDeltaR"
+    }
 }
