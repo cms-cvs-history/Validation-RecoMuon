@@ -10,6 +10,7 @@ block MuonTrackAnalysisParameters = {
     InputTag DTSimHit  = MuonDTHits:g4SimHits
     InputTag CSCSimHit = MuonCSCHits:g4SimHits
     InputTag RPCSimHit = MuonRPCHits:g4SimHits
+    InputTag DataType  = RealData
 }
 
 
@@ -17,7 +18,6 @@ module STAMuonAnalyzer = MuonTrackAnalyzer{
     using MuonTrackAnalysisParameters
 
     untracked bool DoSeedsAnalysis = true
-#    untracked bool DoTracksAnalysis = false
     InputTag MuonSeed = MuonSeed
     
     InputTag Tracks = standAloneMuons:UpdatedAtVtx
@@ -34,15 +34,16 @@ module GLBMuonAnalyzer = MuonTrackAnalyzer{
 module TrackerMuonAnalyzer = MuonTrackAnalyzer{
     using MuonTrackAnalysisParameters
 
-    InputTag Tracks = ctfWithMaterialTracks
+    InputTag Tracks = generalTracks
     untracked string rootFileName = "Tracker.root"
 }
 
 module MuonTrackResidualAnalyzer = MuonTrackResidualAnalyzer{
     using MuonTrackAnalysisParameters
+    InputTag MuonSeed = MuonSeed
 
     InputTag MuonTrack = standAloneMuons
-    #    InputTag MuonTrack = globalMuons
+    #InputTag MuonTrack = globalMuons
 
     untracked string rootFileName = "ResidualSTA.root"
 }

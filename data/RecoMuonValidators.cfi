@@ -25,7 +25,7 @@ module recoMuonValidation = RecoMuonValidator {
 
     untracked string outputFileName = "RecoMuonValidation.root"
 
-    InputTag SimPtcl = "trackingParticles"
+    InputTag SimPtcl = mergedtruth:MergedTrackTruth
     InputTag RecoMuon = muons
 
     PSet StaMuonHistoParameters = {
