@@ -6,6 +6,8 @@ module recoMuonValidator = RecoMuonValidator {
     InputTag simLabel = mergedtruth:MergedTrackTruth
     InputTag recoLabel = globalMuons
 
+    untracked bool doAssoc = true
+    string assocName = "TrackAssociatorByHits"
     InputTag simToRecoLabel = TrackAssociatorByHits
 
     untracked string subDir = "RecoMuonV/Track/Global"
