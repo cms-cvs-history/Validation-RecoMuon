@@ -1,7 +1,25 @@
-block RecoMuonHistoDefaults = {
+module recoMuonValidator = RecoMuonValidator {
+    using MuonServiceProxy
+
+    untracked string outputFileName = "RecoMuonValidation.root"
+
+    InputTag simLabel = mergedtruth:MergedTrackTruth
+    InputTag recoLabel = globalMuons
+
+    InputTag simToRecoLabel = TrackAssociatorByHits
+
+    untracked string subDir = "RecoMuonV/Track/Global"
+
+    ########################
+    # Histogram dimensions #
+    ########################
+    untracked uint32 nBinP = 50
+    untracked double minP  = 0
+    untracked double maxP  = 1000
+
     untracked uint32 nBinPt = 50
     untracked double minPt  = 0 
-    untracked double maxPt  = 50
+    untracked double maxPt  = 1000
 
     untracked bool doAbsEta  = true
     untracked uint32 nBinEta = 50
@@ -10,31 +28,49 @@ block RecoMuonHistoDefaults = {
 
     untracked uint32 nBinPhi = 50 
 
-    untracked uint32 nBinErrPt = 50
-    untracked double wErrPt    = 50
-
-    untracked uint32 nBinErrQOverPt = 50
-    untracked double wErrQOverPt    = 3 
-
+    untracked uint32 nBinErr  = 50
     untracked uint32 nBinPull = 50
-    untracked double wPull    = 5
-}
 
-module recoMuonValidation = RecoMuonValidator {
-    using MuonServiceProxy
+    # Pull width #
+    untracked double wPull    = 10
 
-    untracked string outputFileName = "RecoMuonValidation.root"
+    # |p| resolution #
+    untracked double minErrP  = -0.1
+    untracked double maxErrP  = 0.1
 
-    InputTag SimPtcl = mergedtruth:MergedTrackTruth
-    InputTag RecoMuon = muons
+    # pT resolution #
+    untracked double minErrPt = -0.1
+    untracked double maxErrPt = 0.1
 
-    PSet StaMuonHistoParameters = {
-        using RecoMuonHistoDefaults
-        untracked string subDir = "RecoMuonV/Muon/StaByDeltaR"
-    }
+    # q/pT resolution #
+    untracked double minErrQPt = -10
+    untracked double maxErrQPt = 10
 
-    PSet GlbMuonHistoParameters = {
-        using RecoMuonHistoDefaults
-        untracked string subDir = "RecoMuonV/Muon/GlbByDeltaR"
-    }
+    # Eta resolution #
+    untracked double minErrEta = -0.01
+    untracked double maxErrEta = 0.01
+
+    # Phi resolution #
+    untracked double minErrPhi = -0.003
+    untracked double maxErrPhi = 0.003
+
+    # Dxy resolution #
+    untracked double minErrDxy = -0.01
+    untracked double maxErrDxy = 0.01
+
+    # Dz resolution #
+    untracked double minErrDz = -0.01
+    untracked double maxErrDz = 0.01
+
+    # Number of sim,reco Tracks #
+    untracked uint32 nTrks = 50
+
+    # Number of sim-reco associations #
+    untracked uint32 nAssoc = 50
+
+    # Number of hits #
+    untracked uint32 nHits = 70
+
+    ########################
+
 }
