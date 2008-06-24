@@ -6,6 +6,8 @@ block MuonTrackAnalysisParameters = {
     using MuonServiceProxy
     using MuonUpdatorAtVertex
 
+    untracked string rootFileName = "validationPlots.root"
+    
     int32 EtaRange = 0 # all=0,barrel=1,endacap=2
     InputTag DTSimHit  = MuonDTHits:g4SimHits
     InputTag CSCSimHit = MuonCSCHits:g4SimHits
@@ -16,34 +18,34 @@ block MuonTrackAnalysisParameters = {
 
 module STAMuonAnalyzer = MuonTrackAnalyzer{
     using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackAnalyzer/"
 
     untracked bool DoSeedsAnalysis = true
     InputTag MuonSeed = MuonSeed
     
     InputTag Tracks = standAloneMuons:UpdatedAtVtx
-    untracked string rootFileName = "STA.root"
 }
 
 module GLBMuonAnalyzer = MuonTrackAnalyzer{
     using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackAnalyzer/"
 
     InputTag Tracks = globalMuons
-    untracked string rootFileName = "GLB.root"
 }
 
 module TrackerMuonAnalyzer = MuonTrackAnalyzer{
     using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackAnalyzer/"
 
     InputTag Tracks = generalTracks
-    untracked string rootFileName = "Tracker.root"
 }
 
 module MuonTrackResidualAnalyzer = MuonTrackResidualAnalyzer{
     using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackResidualAnalyzer/"
+
     InputTag MuonSeed = MuonSeed
 
     InputTag MuonTrack = standAloneMuons
     #InputTag MuonTrack = globalMuons
-
-    untracked string rootFileName = "ResidualSTA.root"
 }
