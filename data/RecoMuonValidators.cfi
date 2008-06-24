@@ -9,7 +9,7 @@ module recoMuonValidator = RecoMuonValidator {
     untracked bool doAssoc = true
     InputTag assocLabel = TrackAssociatorByHits
 
-    untracked string subDir = "RecoMuonV/Track/Global"
+    untracked string subDir = "RecoMuonV/MuonValidator/"
 
     ########################
     # Histogram dimensions #
