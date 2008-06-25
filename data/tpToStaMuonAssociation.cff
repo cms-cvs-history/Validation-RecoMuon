@@ -1,0 +1,2 @@
+module tpToStaMuonAssociation = muonAssociatorByHits from "SimMuon/MCTruth/data/MuonAssociatorByHits.cfi"
+replace tpToStaMuonAssociation.tracksTag = standAloneMuons:UpdatedAtVtx

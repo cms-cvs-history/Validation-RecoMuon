@@ -1,0 +1,19 @@
+include "Validation/RecoMuon/data/RecoMuonValidatorCommon.cfi"
+
+module staMuonValidator = RecoMuonValidator {
+    using MuonServiceProxy
+    using RecoMuonValidatorCommon
+
+    untracked string outputFileName = "validationPlots.root"
+
+    InputTag simLabel = mergedtruth:MergedTrackTruth
+    InputTag recoLabel = standAloneMuons:UpdatedAtVtx
+
+    untracked bool doAssoc = false
+    //InputTag assocLabel = TrackAssociatorByDeltaR2
+    InputTag assocLabel = tpToStaTrackAssociation
+
+    untracked string subDir = "RecoMuonV/MuonValidator/"
+
+
+}

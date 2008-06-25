@@ -1,0 +1,15 @@
+es_module TrackAssociatorByDeltaR2 = TrackAssociatorByPositionESProducer
+{
+    string ComponentName = "TrackAssociatorByDeltaR2"
+    string propagator ="SteppingHelixPropagatorAny"
+  # minimum distance from the origin to find a hit 
+  # from a simulated particle and match it to reconstructed track
+    double positionMinimumDistance = 0
+    bool MinIfNoMatch = false
+  # use the delta eta-phi estimator on the position 
+  # at a plane in the muon system    
+    string method = "posdr"    
+  # QminCut not used  
+    double QminCut = 120 
+    double QCut = 0.2
+}

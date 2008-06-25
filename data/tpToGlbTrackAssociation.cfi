@@ -1,0 +1,6 @@
+ module tpToGlbTrackAssociation = TrackAssociatorEDProducer{
+         InputTag label_tr = globalMuons
+         InputTag label_tp = mergedtruth:MergedTrackTruth
+         string associator = "TrackAssociatorByDeltaR1"
+    }
+

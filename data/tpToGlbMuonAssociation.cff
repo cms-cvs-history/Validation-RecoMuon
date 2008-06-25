@@ -1,0 +1,2 @@
+module tpToGlbMuonAssociation = muonAssociatorByHits from "SimMuon/MCTruth/data/MuonAssociatorByHits.cfi"
+replace tpToGlbMuonAssociation.tracksTag = globalMuons

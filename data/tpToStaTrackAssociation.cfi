@@ -1,0 +1,6 @@
+ module tpToStaTrackAssociation = TrackAssociatorEDProducer{
+         InputTag label_tr = standAloneMuons:UpdatedAtVtx
+         InputTag label_tp = mergedtruth:MergedTrackTruth
+         string associator = "TrackAssociatorByDeltaR2"
+    }
+
