@@ -1,0 +1,51 @@
+include "RecoMuon/TrackingTools/data/MuonServiceProxy.cff"
+include "RecoMuon/TrackingTools/data/MuonTrackLoader.cff"
+
+block MuonTrackAnalysisParameters = { 
+    
+    using MuonServiceProxy
+    using MuonUpdatorAtVertex
+
+    untracked string rootFileName = "validationPlots.root"
+    
+    int32 EtaRange = 0 # all=0,barrel=1,endacap=2
+    InputTag DTSimHit  = MuonDTHits:g4SimHits
+    InputTag CSCSimHit = MuonCSCHits:g4SimHits
+    InputTag RPCSimHit = MuonRPCHits:g4SimHits
+    InputTag DataType  = RealData
+}
+
+
+module L2MuonTrackAnalyzer = MuonTrackAnalyzer{
+    using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackAnalyzer/"
+
+    untracked bool DoSeedsAnalysis = true
+    InputTag MuonSeed = MuonSeed
+    
+    InputTag Tracks = hltL2Muons:UpdatedAtVtx
+}
+
+module L3MuonTrackAnalyzer = MuonTrackAnalyzer{
+    using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackAnalyzer/"
+
+    InputTag Tracks = hltL3Muons
+}
+
+module TrackerMuonAnalyzer = MuonTrackAnalyzer{
+    using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackAnalyzer/"
+
+    InputTag Tracks = hltL3Muons:L2Seeded
+}
+
+module MuonTrackResidualAnalyzer = MuonTrackResidualAnalyzer{
+    using MuonTrackAnalysisParameters
+    untracked string dirName = "RecoMuonV/TrackResidualAnalyzer/"
+
+    InputTag MuonSeed = MuonSeed
+
+    InputTag MuonTrack = hltL2Muons
+    #InputTag MuonTrack = hltL3Muons
+}

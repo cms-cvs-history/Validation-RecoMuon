@@ -1,2 +1,8 @@
 module tpToGlbMuonAssociation = muonAssociatorByHits from "SimMuon/MCTruth/data/MuonAssociatorByHits.cfi"
 replace tpToGlbMuonAssociation.tracksTag = globalMuons
+replace tpToGlbMuonAssociation.SimToReco_useTracker = true
+replace tpToGlbMuonAssociation.SimToReco_useMuon = true
+replace tpToGlbMuonAssociation.EfficiencyCut_muon = 0.5
+replace tpToGlbMuonAssociation.PurityCut_muon = 0.5
+replace tpToGlbMuonAssociation.EfficiencyCut_track = 0.5
+replace tpToGlbMuonAssociation.PurityCut_track = 0.75
