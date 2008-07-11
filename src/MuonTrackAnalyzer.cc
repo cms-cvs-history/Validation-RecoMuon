@@ -1,8 +1,8 @@
 /** \class MuonTrackAnalyzer
  *  Analyzer of the Muon tracks
  *
- *  $Date: 2008/05/10 15:19:40 $
- *  $Revision: 1.5 $
+ *  $Date: 2008/06/24 16:40:53 $
+ *  $Revision: 1.6 $
  *  \author R. Bellan - INFN Torino <riccardo.bellan@cern.ch>
  */
 
@@ -278,7 +278,7 @@ void MuonTrackAnalyzer::tracksAnalysis(const Event & event, const EventSetup& ev
     double deltaPt_in_out = innerTSOS.globalMomentum().perp()-outerTSOS.globalMomentum().perp();
     hDeltaPt_In_Out_VsEta->Fill(simTrack.momentum().eta(),deltaPt_in_out);
 
-    double deltaPt_pca_sim = pcaTSOS.globalMomentum().perp()-sqrt(simTrack.momentum().Perp2());
+    double deltaPt_pca_sim = pcaTSOS.globalMomentum().perp()-(simTrack.momentum().perp());
     hDeltaPtVsEta->Fill(simTrack.momentum().eta(),deltaPt_pca_sim);
     
     hChargeVsEta->Fill(simTrack.momentum().eta(),pcaTSOS.charge());
