@@ -11,5 +11,5 @@ es_module TrackAssociatorByDeltaR1 = TrackAssociatorByPositionESProducer
     string method = "posdr"    
   # QminCut not used  
     double QminCut = 120 
-    double QCut = 0.1
+    double QCut = 0.5
 }
