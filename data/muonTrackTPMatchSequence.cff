@@ -1,0 +1,10 @@
+include "Validation/RecoMuon/data/tpToGlbTrackAssociation.cfi"
+include "Validation/RecoMuon/data/tpToStaTrackAssociation.cfi"
+
+module tpToGlbTrackAssociationPos = tpToGlbTrackAssociation from  "Validation/RecoMuon/data/tpToGlbTrackAssociation.cfi"
+replace tpToGlbTrackAssociationPos.associator = "TrackAssociatorByPosition"
+
+module tpToStaTrackAssociationPos = tpToStaTrackAssociation from  "Validation/RecoMuon/data/tpToStaTrackAssociation.cfi"
+replace tpToStaTrackAssociationPos.associator = "TrackAssociatorByPosition"
+
+sequence muonTrackTPMatchSequence = { tpToGlbTrackAssociation & tpToStaTrackAssociation & tpToGlbTrackAssociationPos & tpToStaTrackAssociationPos }
