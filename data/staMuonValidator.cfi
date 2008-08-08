@@ -4,7 +4,7 @@ module staMuonValidator = RecoMuonValidator {
     using MuonServiceProxy
     using RecoMuonValidatorCommon
 
-    untracked string outputFileName = "validationPlots.root"
+    untracked string outputFileName = ""
 
     InputTag simLabel = mergedtruth:MergedTrackTruth
     InputTag recoLabel = standAloneMuons:UpdatedAtVtx
