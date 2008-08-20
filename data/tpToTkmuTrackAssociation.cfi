@@ -1,0 +1,5 @@
+module tpToTkmuTrackAssociation = TrackAssociatorEDProducer{
+    InputTag label_tr = trackerMuons:TrackerOnly
+    InputTag label_tp = mergedtruth:MergedTrackTruth
+    string associator = "TrackAssociatorByHits"
+}

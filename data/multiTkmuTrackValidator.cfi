@@ -1,0 +1,39 @@
+include "Validation/RecoMuon/data/TrackingParticleSelectionForMuonEfficiency.cfi"
+
+module multiTkmuTrackValidator = MultiTrackValidator {
+    VInputTag label = {trackerMuons:TrackerOnly}
+    InputTag beamSpot = offlineBeamSpot
+    InputTag label_tp_effic = mergedtruth:MergedTrackTruth
+    InputTag label_tp_fake = mergedtruth:MergedTrackTruth
+
+    ### 
+    vstring associators = {"TrackAssociatorByHits"}
+    //vstring associators = {"tpToGlbMuonAssociation"}
+    
+    ### if *not* uses associators, the TP-RecoTrack maps has to be specified 
+    bool UseAssociators = false
+
+    InputTag associatormap = tpToTkmuTrackAssociation
+    //InputTag associatormap = tpToGlbMuonAssociation
+	
+    ### selection of TP for evaluation of efficiency
+    using TrackingParticleSelectionForMuonEfficiency
+    ### 
+
+
+    string  sim   = "g4SimHits"
+    string  out   = "validationPlots.root"
+    double  min   = -2.5
+    double  max   = 2.5
+    int32   nint  = 50
+    bool    useFabsEta = false
+    double  minpT = 0
+    double  maxpT = 3100
+    int32   nintpT= 300
+    bool    useInvPt = false
+    double  minHit = 0
+    double  maxHit = 75
+    int32   nintHit= 75
+    string  dirName = "RecoMuonV/MultiTrack/"
+}
+
