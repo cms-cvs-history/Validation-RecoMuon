@@ -227,7 +227,7 @@ void MuonTrackAnalyzer::seedsAnalysis(const Event & event, const EventSetup& eve
 	      hRecoSeedInner, debug);
     
     std::pair<bool,FreeTrajectoryState> propSeed =
-      theUpdator->propagateToNominalLine(seedTSOS);
+      theUpdator->propagate(seedTSOS);
     if(propSeed.first)
       fillPlots(propSeed.second, sim.first,
 		hRecoSeedPCA, debug);
@@ -278,7 +278,7 @@ void MuonTrackAnalyzer::tracksAnalysis(const Event & event, const EventSetup& ev
     double deltaPt_in_out = innerTSOS.globalMomentum().perp()-outerTSOS.globalMomentum().perp();
     hDeltaPt_In_Out_VsEta->Fill(simTrack.momentum().eta(),deltaPt_in_out);
 
-    double deltaPt_pca_sim = pcaTSOS.globalMomentum().perp()-sqrt(simTrack.momentum().Perp2());
+    double deltaPt_pca_sim = pcaTSOS.globalMomentum().perp()-(simTrack.momentum().perp());
     hDeltaPtVsEta->Fill(simTrack.momentum().eta(),deltaPt_pca_sim);
     
     hChargeVsEta->Fill(simTrack.momentum().eta(),pcaTSOS.charge());
