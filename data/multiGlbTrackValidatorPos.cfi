@@ -22,7 +22,7 @@ module multiGlbTrackValidatorPos = MultiTrackValidator {
 
 
     string  sim   = "g4SimHits"
-    string  out   = "validationPlots.root"
+    string  outputFile   = "validationPlots.root"
     double  min   = -2.5
     double  max   = 2.5
     int32   nint  = 50
