@@ -1,9 +1,0 @@
-include "RecoMuon/TrackingTools/data/MuonServiceProxy.cff"
-include "RecoMuon/TrackingTools/data/MuonUpdatorAtVertex.cff"
-
-module muonSeedTrack = MuonSeedTrack {
-    using MuonServiceProxy
-    using MuonUpdatorAtVertex
-    
-    InputTag MuonSeed = MuonSeed
-}

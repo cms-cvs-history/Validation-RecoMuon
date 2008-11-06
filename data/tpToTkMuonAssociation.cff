@@ -1,6 +1,0 @@
-module tpToTkMuonAssociation = muonAssociatorByHits from "SimMuon/MCTruth/data/MuonAssociatorByHits.cfi"
-replace tpToTkMuonAssociation.tracksTag = generalTracks
-replace tpToTkMuonAssociation.SimToReco_useTracker = true
-replace tpToTkMuonAssociation.SimToReco_useMuon = false
-replace tpToTkMuonAssociation.EfficiencyCut_track = 0.5
-replace tpToTkMuonAssociation.PurityCut_track = 0.75

@@ -1,6 +1,0 @@
- module tpToL2TrackAssociation = TrackAssociatorEDProducer{
-         InputTag label_tr = hltL2Muons:UpdatedAtVtx
-         InputTag label_tp = mergedtruth:MergedTrackTruth
-         string associator = "TrackAssociatorByDeltaR2"
-    }
-

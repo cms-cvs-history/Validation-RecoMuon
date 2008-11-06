@@ -1,6 +1,0 @@
-
-include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cff" 
-include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
-include "RecoMuon/DetLayers/data/muonDetLayerGeometry.cfi"
-
-include "Validation/RecoMuon/data/MuonSeedTrack.cfi"
