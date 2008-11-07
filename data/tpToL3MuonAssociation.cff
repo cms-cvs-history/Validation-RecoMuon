@@ -1,2 +1,0 @@
-module tpToL3MuonAssociation = muonAssociatorByHits from "SimMuon/MCTruth/data/MuonAssociatorByHits.cfi"
-replace tpToL3MuonAssociation.tracksTag = hltL3Muons

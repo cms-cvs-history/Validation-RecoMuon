@@ -1,4 +1,0 @@
-include "Validation/RecoMuon/data/cutsMuTPEffic.cfi"
-include "Validation/RecoMuon/data/cutsMuTPFake.cfi"
-include "Validation/RecoMuon/data/cutsSTA.cfi"
-include "Validation/RecoMuon/data/cutsGLB.cfi"

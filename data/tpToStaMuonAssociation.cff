@@ -1,6 +1,0 @@
-module tpToStaMuonAssociation = muonAssociatorByHits from "SimMuon/MCTruth/data/MuonAssociatorByHits.cfi"
-replace tpToStaMuonAssociation.tracksTag = standAloneMuons:UpdatedAtVtx
-replace tpToStaMuonAssociation.SimToReco_useTracker = false
-replace tpToStaMuonAssociation.SimToReco_useMuon = true
-replace tpToStaMuonAssociation.EfficiencyCut_muon = 0.5
-replace tpToStaMuonAssociation.PurityCut_muon = 0.5
