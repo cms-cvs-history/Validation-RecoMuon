@@ -211,8 +211,7 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    sh3->GetXaxis()->SetRangeUser(0,10);
    rh4->GetXaxis()->SetRangeUser(0,10);
    sh4->GetXaxis()->SetRangeUser(0,10);
-   NormalizeHistograms(rh3,sh3);
-   NormalizeHistograms(rh4,sh4);
+   NormalizeHistograms(rh2,sh2);
    
    plot4histos(canvas,
 	      sh1,rh1,sh2,rh2,
