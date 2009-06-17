@@ -82,7 +82,7 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
  bool ctf=1;
  bool rs=0;
  
-  TIter iter_r( rl );
+ TIter iter_r( rl );
  TIter iter_s( sl );
  TKey * myKey1, *myKey2;
  while ( (myKey1 = (TKey*)iter_r()) ) {
@@ -114,14 +114,16 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    sh1->GetYaxis()->SetRangeUser(0.5,1.025);
    rdir->GetObject(collname1+"/fakerate",rh2);
    sdir->GetObject(collname2+"/fakerate",sh2);
-   rh2->GetYaxis()->SetRangeUser(0.,.70);
-   sh2->GetYaxis()->SetRangeUser(0.,.70);
+   //   rh2->GetYaxis()->SetRangeUser(0.,.70);
+   //   sh2->GetYaxis()->SetRangeUser(0.,.70);
 
 
    rdir->GetObject(collname1+"/efficPt",rh3);
    sdir->GetObject(collname2+"/efficPt",sh3);
-   rh3->GetXaxis()->SetRangeUser(0,30);
-   sh3->GetXaxis()->SetRangeUser(0,30);
+   //   rh3->GetXaxis()->SetRangeUser(0,30);
+   //   sh3->GetXaxis()->SetRangeUser(0,30);
+   rh3->GetYaxis()->SetRangeUser(0.,1.025);
+   sh3->GetYaxis()->SetRangeUser(0.,1.025);
    rh3->GetYaxis()->SetTitle("efficiency vs p_{t}");
    rh3->GetYaxis()->SetTitleSize(0.05);
    rh3->GetYaxis()->SetTitleOffset(1.2);
@@ -129,13 +131,13 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rdir->GetObject(collname1+"/fakeratePt",rh4);
    sdir->GetObject(collname2+"/fakeratePt",sh4);
    rh4->SetTitle("");
-   rh4->GetYaxis()->SetTitle("fakrate vs p_{t}");
+   rh4->GetYaxis()->SetTitle("fakerate vs p_{t}");
    rh4->GetYaxis()->SetTitleSize(0.05);
    rh4->GetYaxis()->SetTitleOffset(1.2);
-   rh4->GetYaxis()->SetRangeUser(0.,.80);
-   sh4->GetYaxis()->SetRangeUser(0.,.80);
-   rh4->GetXaxis()->SetRangeUser(0.2,50);
-   sh4->GetXaxis()->SetRangeUser(0.2,50);
+   //   rh4->GetYaxis()->SetRangeUser(0.,.80);
+   //   sh4->GetYaxis()->SetRangeUser(0.,.80);
+   //   rh4->GetXaxis()->SetRangeUser(0.2,50);
+   //   sh4->GetXaxis()->SetRangeUser(0.2,50);
 
 
    rdir->GetObject(collname1+"/effic_vs_hit",rh5);
@@ -144,8 +146,8 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    //sh3->GetXaxis()->SetRangeUser(0,30);
    rdir->GetObject(collname1+"/fakerate_vs_hit",rh6);
    sdir->GetObject(collname2+"/fakerate_vs_hit",sh6);
-   rh6->GetYaxis()->SetRangeUser(0.,1.0);
-   rh6->GetYaxis()->SetRangeUser(0.,1.0);
+   //   rh6->GetYaxis()->SetRangeUser(0.,1.0);
+   //   sh6->GetYaxis()->SetRangeUser(0.,1.0);
 
    //rdir->GetObject(collname1+"/num_reco_pT",rh6);
    //sdir->GetObject(collname2+"/num_reco_pT",sh6);
@@ -207,10 +209,10 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rh2->GetXaxis()->SetRangeUser(0,74);
    sh2->GetXaxis()->SetRangeUser(0,74);
    
-   //   rh3->GetXaxis()->SetRangeUser(0,10);
-   //   sh3->GetXaxis()->SetRangeUser(0,10);
-   //   rh4->GetXaxis()->SetRangeUser(0,10);
-   //   sh4->GetXaxis()->SetRangeUser(0,10);
+   //  rh3->GetXaxis()->SetRangeUser(0,10);
+   //  sh3->GetXaxis()->SetRangeUser(0,10);
+   //  rh4->GetXaxis()->SetRangeUser(0,10);
+   //  sh4->GetXaxis()->SetRangeUser(0,10);
    NormalizeHistograms(rh2,sh2);
    NormalizeHistograms(rh3,sh3);
    NormalizeHistograms(rh4,sh4);
@@ -366,9 +368,6 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    canvas->Print(newDir+"/pulls.pdf");
    delete l;
    delete canvas;
-
-
-
    
 
    //===== resolutions vs eta
@@ -600,6 +599,9 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    //
    //===== resolutions vs pt
    //
+
+   Float_t maxPT=1025.;
+
    rdir->GetObject(collname1+"/phires_vs_pt_Sigma",rh1);
    sdir->GetObject(collname2+"/phires_vs_pt_Sigma",sh1);
 
@@ -618,7 +620,6 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rdir->GetObject(collname1+"/ptres_vs_pt_Sigma",rh5);
    sdir->GetObject(collname2+"/ptres_vs_pt_Sigma",sh5);
 
-
    rh1->SetTitle("");
    rh1->GetYaxis()->SetTitleSize(0.05);
    rh1->GetYaxis()->SetTitleOffset(1.2);
@@ -626,8 +627,8 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rh1->GetXaxis()->SetTitleSize(0.055);
    rh1->GetXaxis()->SetTitleOffset(0.8);
    rh1->GetXaxis()->SetTitle("p_{t}");
-   rh1->GetXaxis()->SetRangeUser(0,30.);
-   sh1->GetXaxis()->SetRangeUser(0,30.);
+   rh1->GetXaxis()->SetRangeUser(0,maxPT);
+   sh1->GetXaxis()->SetRangeUser(0,maxPT);
  
 
    rh2->SetTitle("");
@@ -637,9 +638,8 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rh2->GetXaxis()->SetTitleSize(0.055);
    rh2->GetXaxis()->SetTitleOffset(0.8);
    rh2->GetXaxis()->SetTitle("p_{t}");
-
-   rh2->GetXaxis()->SetRangeUser(0,30.);
-   sh2->GetXaxis()->SetRangeUser(0,30.);
+   rh2->GetXaxis()->SetRangeUser(0,maxPT);
+   sh2->GetXaxis()->SetRangeUser(0,maxPT);
 
    rh3->SetTitle("");
    rh3->GetYaxis()->SetTitleSize(0.05);
@@ -648,10 +648,8 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rh3->GetXaxis()->SetTitleSize(0.055);
    rh3->GetXaxis()->SetTitleOffset(0.8);
    rh3->GetXaxis()->SetTitle("p_{t}");
-
-
-   rh3->GetXaxis()->SetRangeUser(0,30.);
-   sh3->GetXaxis()->SetRangeUser(0,30.);
+   rh3->GetXaxis()->SetRangeUser(0,maxPT);
+   sh3->GetXaxis()->SetRangeUser(0,maxPT);
 
 
    rh4->SetTitle("");
@@ -661,9 +659,8 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rh4->GetXaxis()->SetTitleSize(0.055);
    rh4->GetXaxis()->SetTitleOffset(0.8);
    rh4->GetXaxis()->SetTitle("p_{t}");
-
-   rh4->GetXaxis()->SetRangeUser(0,30.);
-   sh4->GetXaxis()->SetRangeUser(0,30.);
+   rh4->GetXaxis()->SetRangeUser(0,maxPT);
+   sh4->GetXaxis()->SetRangeUser(0,maxPT);
 
 
    rh5->SetTitle("");
@@ -673,14 +670,12 @@ void HLTTrackValHistoPublisher(char* newFile="NEW_FILE",char* refFile="REF_FILE"
    rh5->GetXaxis()->SetTitleSize(0.055);
    rh5->GetXaxis()->SetTitleOffset(0.8);
    rh5->GetXaxis()->SetTitle("p_{t}");
+   rh5->GetXaxis()->SetRangeUser(0,maxPT);
+   sh5->GetXaxis()->SetRangeUser(0,maxPT);
 
 
-   rh5->GetXaxis()->SetRangeUser(0,30.);
-   sh5->GetXaxis()->SetRangeUser(0,30.);
-
-
-   rh6->GetXaxis()->SetRangeUser(0,30.);
-   sh6->GetXaxis()->SetRangeUser(0,30.);
+   //   rh6->GetXaxis()->SetRangeUser(0,maxPT);
+   //   sh6->GetXaxis()->SetRangeUser(0,maxPT);
 
 
    canvas = new TCanvas("Tracks7","Tracks: Dxy, Dz, Theta resolution",1000,1400);
