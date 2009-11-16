@@ -99,7 +99,7 @@ from Validation.RecoMuon.RecoMuonValidator_cfi import *
 import Validation.RecoMuon.RecoMuonValidator_cfi
 
 recoMuonVMuAssoc = Validation.RecoMuon.RecoMuonValidator_cfi.recoMuonValidator.clone()
-recoMuonVMuAssoc.subDir = 'Muons/RecoMuonV/RecoMuon_MuonAssoc'
+recoMuonVMuAssoc.subDir = 'RecoMuonV/RecoMuon_MuonAssoc'
 recoMuonVMuAssoc.trkMuLabel = 'generalTracks'
 recoMuonVMuAssoc.staMuLabel = 'standAloneMuons:UpdatedAtVtx'
 recoMuonVMuAssoc.glbMuLabel = 'globalMuons'
@@ -108,7 +108,7 @@ recoMuonVMuAssoc.staMuAssocLabel = 'tpToStaUpdMuonAssociation'
 recoMuonVMuAssoc.glbMuAssocLabel = 'tpToGlbMuonAssociation'
 
 recoMuonVTrackAssoc = Validation.RecoMuon.RecoMuonValidator_cfi.recoMuonValidator.clone()
-recoMuonVTrackAssoc.subDir = 'Muons/RecoMuonV/RecoMuon_TrackAssoc'
+recoMuonVTrackAssoc.subDir = 'RecoMuonV/RecoMuon_TrackAssoc'
 recoMuonVTrackAssoc.trkMuLabel = 'generalTracks'
 recoMuonVTrackAssoc.staMuLabel = 'standAloneMuons:UpdatedAtVtx'
 recoMuonVTrackAssoc.glbMuLabel = 'globalMuons'
