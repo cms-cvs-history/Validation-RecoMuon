@@ -5,8 +5,8 @@ import sys
 import fileinput
 import string
 
-NewVersion='3_4_0_pre5'
-RefVersion='3_4_0_pre4'
+NewVersion='3_1_5'
+RefVersion='3_1_4'
 NewRelease='CMSSW_'+NewVersion
 RefRelease='CMSSW_'+RefVersion
 #NewRelease='Summer09'
@@ -47,26 +47,26 @@ ValidateHLT=True
 
 if (NewFastSim):
     NewTag = NewCondition+'_noPU_ootb_FSIM'
-    NewLabel=NewCondition+'_3XY_V12_FastSim'
+    NewLabel=NewCondition+'_31X_V3_FastSim'
     NewFormat='GEN-SIM-DIGI-RECO'
 else:
     NewTag = NewCondition+'_noPU_ootb'
-    NewLabel=NewCondition+'_3XY_V12'
+    NewLabel=NewCondition+'_31X_V3'
 #    NewLabel=NewCondition+'31X_V3_preproduction_312'
     if (NewCondition=='STARTUP'):
-        NewLabel=NewCondition+'3X_V11'
+        NewLabel=NewCondition+'31X_V2'
     NewFormat='GEN-SIM-RECO'
 
 if (RefFastSim):
     RefTag = RefCondition+'_noPU_ootb_FSIM'
-    RefLabel=RefCondition+'_3XY_V12_FastSim'
+    RefLabel=RefCondition+'_31X_V3_FastSim'
     RefFormat='GEN-SIM-DIGI-RECO'
 else:
     RefTag = RefCondition+'_noPU_ootb'
-    RefLabel=RefCondition+'_3XY_V12'
+    RefLabel=RefCondition+'_31X_V3'
 #    RefLabel=RefCondition+'_31X_V2_preproduction_311'
     if (RefCondition=='STARTUP'):
-        RefLabel=RefCondition+'3X_V11'
+        RefLabel=RefCondition+'31X_V2'
     RefFormat='GEN-SIM-RECO'
 
 NewLabel=NewLabel+'-v1'
