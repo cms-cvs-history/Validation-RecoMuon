@@ -329,13 +329,13 @@ tpToTkmuTrackAssociationFS = cms.EDProducer('TrackAssociatorEDProducer',
 
 tpToStaTrackAssociationFS = cms.EDProducer('TrackAssociatorEDProducer',
     associator = cms.string('TrackAssociatorByDeltaR'),
-    label_tp = cms.InputTag('mergedtruthMuon', 'MergedTrackTruth'),
+    label_tp = cms.InputTag('mix', 'MergedTrackTruth'),
     label_tr = cms.InputTag('standAloneMuons','')
 )
 
 tpToStaUpdTrackAssociationFS = cms.EDProducer('TrackAssociatorEDProducer',
     associator = cms.string('TrackAssociatorByDeltaR'),
-    label_tp = cms.InputTag('mergedtruthMuon', 'MergedTrackTruth'),
+    label_tp = cms.InputTag('mix', 'MergedTrackTruth'),
     label_tr = cms.InputTag('standAloneMuons','UpdatedAtVtx')
 )
 
@@ -366,14 +366,14 @@ tpToTevDytTrackAssociationFS = cms.EDProducer('TrackAssociatorEDProducer',
 tpToL2TrackAssociationFS = cms.EDProducer('TrackAssociatorEDProducer',
     ignoremissingtrackcollection=cms.untracked.bool(True),
     associator = cms.string('TrackAssociatorByDeltaR'),
-    label_tp = cms.InputTag('mergedtruthMuon', 'MergedTrackTruth'),
+    label_tp = cms.InputTag('mix', 'MergedTrackTruth'),
     label_tr = cms.InputTag('hltL2Muons','')
 )
 
 tpToL2UpdTrackAssociationFS = cms.EDProducer('TrackAssociatorEDProducer',
     ignoremissingtrackcollection=cms.untracked.bool(True),
     associator = cms.string('TrackAssociatorByDeltaR'),
-    label_tp = cms.InputTag('mergedtruthMuon', 'MergedTrackTruth'),
+    label_tp = cms.InputTag('mix', 'MergedTrackTruth'),
     label_tr = cms.InputTag('hltL2Muons','UpdatedAtVtx')
 )
 
@@ -403,7 +403,7 @@ tpToL3L2TrackTrackAssociationFS = cms.EDProducer("TrackAssociatorEDProducer",
 import SimMuon.MCTruth.MuonAssociatorByHits_cfi
 
 baseMuonAssociatorFS = SimMuon.MCTruth.MuonAssociatorByHits_cfi.muonAssociatorByHits.clone()
-baseMuonAssociatorFS.tpTag = 'mergedtruthMuon:MergedTrackTruth'
+baseMuonAssociatorFS.tpTag = 'mix:MergedTrackTruth'
 baseMuonAssociatorFS.UseTracker = True
 baseMuonAssociatorFS.UseMuon = True
 baseMuonAssociatorFS.simtracksTag = "famosSimHits"
